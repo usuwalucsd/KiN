@@ -1,3 +1,9 @@
+// datapipe 
+
+const subject_id = jsPsych.randomization.randomID(10);
+const filename = `${subject_id}.csv`;
+
+
 // initialization 
 var jsPsych = initJsPsych({
   on_finish: function() {
@@ -145,13 +151,24 @@ var exit_fullscreen = {
   
 }; 
 
+// DATAPIPE
+
+const save_data = {
+type: jsPsychPipe,
+action: "save",
+experiment_id: "X1t4NyATuKeH",
+filename: filename,
+data_string: ()=>jsPsych.data.get().csv()
+};
+
 
 timeline = [ 
   fullscreen,
   participant_id, 
   intro_agents,
   procedure,
-  exit_fullscreen
+  save_data,
+  exit_fullscreen, 
 ]
 
 
