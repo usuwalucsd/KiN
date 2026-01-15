@@ -1,15 +1,17 @@
+
+// initialization 
+var jsPsych = initJsPsych({
+  // on_finish: function() {
+  //   jsPsych.data.displayData();
+  // }
+});
+
 // datapipe 
 
 const subject_id = jsPsych.randomization.randomID(10);
 const filename = `${subject_id}.csv`;
 
 
-// initialization 
-var jsPsych = initJsPsych({
-  on_finish: function() {
-    jsPsych.data.displayData();
-  }
-});
 
 var participant_code = ''; 
 
@@ -55,18 +57,28 @@ function condition_randomization() {
   return exp_conditions;
 }
 
+// all conditions 
 const experiment_conditions = shuffle(condition_randomization())
 
+// this is so that we know which manipulation for each scenario we are running 
 const scenario_code = {food: 1,bedtime: 2,activity: 3,toy: 4};
 const ask_size_code = {small: 1,large: 2};
 const interaction_history_code = {none: 1,failed: 2};
+/* condition codes 
+array of numbers that indicates which manipulation we are running for each scenario 
+numbers look like scenario.asksize.interactionhistory for eg. 1.2.1
+they should be in the order of randomization based on experiment conditions
+*/
 const condition_codes = experiment_conditions.map(([s, a, h]) => `${scenario_code[s]}.${ask_size_code[a]}.${interaction_history_code[h]}`);
 
 
 var timeline;
 
-/*  */
 function stimset(condition){
+  /*  
+    helper function that returns the images that we will be using for each scenario 
+    returns an array with two elements, first element is an array of slides for the scenario, second element is an array with one element which is a thank you slide
+  */
   var stimset_images = [(condition[0]+"-background"), (condition[0]+"-1"), (condition[0]+"-2")]
 
   if (condition[2] == 'failed') {
