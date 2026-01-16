@@ -6,13 +6,6 @@ var jsPsych = initJsPsych({
   // }
 });
 
-// datapipe 
-
-const subject_id = jsPsych.randomization.randomID(10);
-const filename = `${subject_id}.csv`;
-
-
-
 var participant_code = ''; 
 
 var participant_id = {
@@ -106,6 +99,11 @@ function stimset(condition){
 
 var timeline; 
 
+var preload = {
+    type: jsPsychPreload,
+    auto_preload: true
+}
+
 var start = {
   type: jsPsychInstructions, 
   pages: jsPsych.timelineVariable("start"), 
@@ -163,19 +161,25 @@ var exit_fullscreen = {
   
 }; 
 
-// DATAPIPE
+
+// datapipe 
+const subject_id = jsPsych.randomization.randomID(10);
+// const filename = `${subject_id}.csv`;
+const filename = participant_code; 
 
 const save_data = {
-type: jsPsychPipe,
-action: "save",
-experiment_id: "X1t4NyATuKeH",
-filename: filename,
-data_string: ()=>jsPsych.data.get().csv()
+  type: jsPsychPipe,
+  action: "save",
+  experiment_id: "X1t4NyATuKeH",
+  filename: filename,
+  data_string: ()=>jsPsych.data.get().csv()
 };
 
 
+// timeline 
 timeline = [ 
   fullscreen,
+  preload, 
   participant_id, 
   intro_agents,
   procedure,
