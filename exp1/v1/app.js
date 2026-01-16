@@ -164,8 +164,8 @@ var exit_fullscreen = {
 
 // datapipe 
 const subject_id = jsPsych.randomization.randomID(10);
-// const filename = `${subject_id}.csv`;
-const filename = participant_code; 
+const filename = `${subject_id}.csv`;
+// const filename = participant_code; 
 
 const save_data = {
   type: jsPsychPipe,
