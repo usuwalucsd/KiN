@@ -167,6 +167,8 @@ const subject_id = jsPsych.randomization.randomID(10);
 const filename = `${subject_id}.csv`;
 // const filename = participant_code; 
 
+jsPsych.data.get().addToAll({participant_id: participant_code});
+
 const save_data = {
   type: jsPsychPipe,
   action: "save",
