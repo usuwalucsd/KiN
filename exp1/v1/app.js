@@ -33,7 +33,6 @@ function condition_randomization() {
   for each scenario, this function selects a manipulation for either parameters: ask size and interaction history
 */
   const scenarios = shuffle(["food", "bedtime", "activity", "toy"]);
-
   const ask_size_interaction_history = shuffle([
     ["small", "none"],
     ["small", "failed"],
@@ -224,7 +223,6 @@ const save_data = {
 
 // timeline 
 timeline = [ 
-  // dv_test,
   fullscreen,
   preload, 
   participant_id, 
