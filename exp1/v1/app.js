@@ -141,6 +141,8 @@ var thankyou = {
 
 
 
+
+
 var fullscreen = {
   type: jsPsychFullscreen
 }
@@ -152,13 +154,47 @@ var intro_agents = {
   allow_keys: false, 
 }
 
+
+var dv_small_ask = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: jsPsych.timelineVariable("agentprompt1"), 
+  choices: ['<img src="stim/more-stim/yes.png" style="max-width:10%">', '<img src="stim/more-stim/maybe.png" style="max-width:10%">', '<img src="stim/more-stim/no.png" style="max-width:10%">'],
+}
+
+var dv_big_ask = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: jsPsych.timelineVariable("agentprompt2"), 
+  choices: ['<img src="stim/more-stim/yes.png" style="max-width:10%">', '<img src="stim/more-stim/maybe.png" style="max-width:10%">', '<img src="stim/more-stim/no.png" style="max-width:10%">'],
+}
+
+// var dv_test = {
+//   type: jsPsychHtmlButtonResponse,
+//   // stimulus: '<img src="stim/more-stim/food-agent.png" style="max-width:10%"><img src="stim/responses/food-direct-small.png" style="max-width:20%">',
+//   choices: ['<img src="stim/more-stim/yes.png" style="max-width:10%">', '<img src="stim/more-stim/maybe.png" style="max-width:10%">', '<img src="stim/more-stim/no.png" style="max-width:10%">'],
+// }
+
 var procedure = {
-  timeline: [start, scenario, response, thankyou],
+  timeline: [start, scenario, response, dv_small_ask, dv_big_ask, thankyou],
   timeline_variables: [
-    {start: [condition_codes[0]], pages: stimset(experiment_conditions[0])[0], scenario: experiment_conditions[0][0], ask_size: experiment_conditions[0][1], interaction_history: experiment_conditions[0][2], thankyou: stimset(experiment_conditions[0])[1]},   
-    {start: [condition_codes[1]], pages: stimset(experiment_conditions[1])[0], scenario: experiment_conditions[1][0], ask_size: experiment_conditions[1][1], interaction_history: experiment_conditions[1][2], thankyou: stimset(experiment_conditions[1])[1]},   
-    {start: [condition_codes[2]], pages: stimset(experiment_conditions[2])[0], scenario: experiment_conditions[2][0], ask_size: experiment_conditions[2][1], interaction_history: experiment_conditions[2][2], thankyou: stimset(experiment_conditions[2])[1]},   
-    {start: [condition_codes[3]], pages: stimset(experiment_conditions[3])[0], scenario: experiment_conditions[3][0], ask_size: experiment_conditions[3][1], interaction_history: experiment_conditions[3][2], thankyou: stimset(experiment_conditions[3])[1]},   
+    {start: [condition_codes[0]], pages: stimset(experiment_conditions[0])[0], scenario: experiment_conditions[0][0], ask_size: experiment_conditions[0][1], interaction_history: experiment_conditions[0][2], thankyou: stimset(experiment_conditions[0])[1], 
+      agentprompt1: '<img src="stim/more-stim/'+experiment_conditions[0][0]+'-agent.png" style="max-width:10%"><img src="stim/responses/'+experiment_conditions[0][0]+'-direct-'+experiment_conditions[0][1]+'.png" style="max-width:20%">',
+      agentprompt2: '<img src="stim/more-stim/'+experiment_conditions[0][0]+'-agent.png" style="max-width:10%"><img src="stim/responses/'+experiment_conditions[0][0]+'-negotiate-'+experiment_conditions[0][1]+'.png" style="max-width:20%">',
+    },   
+   
+    {start: [condition_codes[1]], pages: stimset(experiment_conditions[1])[0], scenario: experiment_conditions[1][0], ask_size: experiment_conditions[1][1], interaction_history: experiment_conditions[1][2], thankyou: stimset(experiment_conditions[1])[1],
+      agentprompt1: '<img src="stim/more-stim/'+experiment_conditions[1][0]+'-agent.png" style="max-width:10%"><img src="stim/responses/'+experiment_conditions[1][0]+'-direct-'+experiment_conditions[1][1]+'.png" style="max-width:20%">',
+      agentprompt2: '<img src="stim/more-stim/'+experiment_conditions[1][0]+'-agent.png" style="max-width:10%"><img src="stim/responses/'+experiment_conditions[1][0]+'-negotiate-'+experiment_conditions[1][1]+'.png" style="max-width:20%">',
+    },   
+    {start: [condition_codes[2]], pages: stimset(experiment_conditions[2])[0], scenario: experiment_conditions[2][0], ask_size: experiment_conditions[2][1], interaction_history: experiment_conditions[2][2], thankyou: stimset(experiment_conditions[2])[1], 
+      agentprompt1: '<img src="stim/more-stim/'+experiment_conditions[2][0]+'-agent.png" style="max-width:10%"><img src="stim/responses/'+experiment_conditions[2][0]+'-direct-'+experiment_conditions[2][1]+'.png" style="max-width:20%">',
+      agentprompt2: '<img src="stim/more-stim/'+experiment_conditions[2][0]+'-agent.png" style="max-width:10%"><img src="stim/responses/'+experiment_conditions[2][0]+'-negotiate-'+experiment_conditions[2][1]+'.png" style="max-width:20%">',
+
+    },   
+    {start: [condition_codes[3]], pages: stimset(experiment_conditions[3])[0], scenario: experiment_conditions[3][0], ask_size: experiment_conditions[3][1], interaction_history: experiment_conditions[3][2], thankyou: stimset(experiment_conditions[3])[1], 
+            agentprompt1: '<img src="stim/more-stim/'+experiment_conditions[3][0]+'-agent.png" style="max-width:10%"><img src="stim/responses/'+experiment_conditions[3][0]+'-direct-'+experiment_conditions[3][1]+'.png" style="max-width:20%">',
+      agentprompt2: '<img src="stim/more-stim/'+experiment_conditions[3][0]+'-agent.png" style="max-width:10%"><img src="stim/responses/'+experiment_conditions[3][0]+'-negotiate-'+experiment_conditions[3][1]+'.png" style="max-width:20%">',
+
+    },   
   ]
 }
 
@@ -188,6 +224,7 @@ const save_data = {
 
 // timeline 
 timeline = [ 
+  // dv_test,
   fullscreen,
   preload, 
   participant_id, 
