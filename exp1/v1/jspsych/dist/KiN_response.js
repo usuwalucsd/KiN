@@ -28,7 +28,7 @@ var KiN_response = (function (jspsych) {
    * @author Urvi Suwal
    */
   class KiNResponse{
-    constructor(jsPsych) {
+    constructor(jsPsych) { 
       this.jsPsych = jsPsych;
     }
     trial(display_element, trial) {

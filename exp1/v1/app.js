@@ -32,21 +32,20 @@ function condition_randomization() {
   scenario, ask size, interaction history
   for each scenario, this function selects a manipulation for either parameters: ask size and interaction history
 */
-  const scenarios = ["food", "bedtime", "activity", "toy"]; 
-  const ask_size = ["small", "large"];
-  const interaction_history = ["none", "failed"];
+  const scenarios = shuffle(["food", "bedtime", "activity", "toy"]);
 
-  const rand = arr => arr[Math.floor(Math.random() * arr.length)];
+  const ask_size_interaction_history = shuffle([
+    ["small", "none"],
+    ["small", "failed"],
+    ["large", "none"],
+    ["large", "failed"]
+  ]);
 
-  const exp_conditions = [];
+  const exp_conditions = scenarios.map((scenario, i) => [
+    scenario,
+    ...ask_size_interaction_history[i]
+  ]);
 
-  for (let i = 0; i < scenarios.length; i++) {
-    exp_conditions.push([
-      scenarios[i],
-      rand(ask_size),
-      rand(interaction_history)
-    ]);
-  }
   return exp_conditions;
 }
 
@@ -72,7 +71,12 @@ function stimset(condition){
     helper function that returns the images that we will be using for each scenario 
     returns an array with two elements, first element is an array of slides for the scenario, second element is an array with one element which is a thank you slide
   */
-  var stimset_images = [(condition[0]+"-background"), (condition[0]+"-1"), (condition[0]+"-2")]
+  var stimset_images = [(condition[0]+"-background"), (condition[0]+"-1")]
+  if (condition[1] == 'small'){
+    stimset_images.push(condition[0]+"-small-ask")
+  } else {
+    stimset_images.push(condition[0]+"-big-ask")
+  }
 
   if (condition[2] == 'failed') {
     stimset_images.push(condition[0]+"-parent")
@@ -99,10 +103,13 @@ function stimset(condition){
 
 var timeline; 
 
+
 var preload = {
     type: jsPsychPreload,
     auto_preload: true
+    // images: allstims
 }
+
 
 var start = {
   type: jsPsychInstructions, 
@@ -131,6 +138,7 @@ var thankyou = {
   show_clickable_nav: true, 
   allow_keys: false, 
 }
+
 
 
 var fullscreen = {
