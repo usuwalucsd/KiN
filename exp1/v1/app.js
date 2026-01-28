@@ -1,5 +1,6 @@
 
-// initialization 
+// cogs119 githubtesting
+ 
 var jsPsych = initJsPsych({
   // on_finish: function() {
   //   jsPsych.data.displayData();
@@ -137,11 +138,6 @@ var thankyou = {
   show_clickable_nav: true, 
   allow_keys: false, 
 }
-
-
-
-
-
 var fullscreen = {
   type: jsPsychFullscreen
 }
@@ -208,7 +204,6 @@ var exit_fullscreen = {
 // datapipe 
 const subject_id = jsPsych.randomization.randomID(10);
 const filename = `${subject_id}.csv`;
-// const filename = participant_code; 
 
 jsPsych.data.get().addToAll({participant_id: participant_code});
 
