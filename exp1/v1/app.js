@@ -1,5 +1,5 @@
 
-// cogs119 githubtesting
+// testing testing testing
  
 var jsPsych = initJsPsych({
   // on_finish: function() {
