@@ -169,7 +169,7 @@ function dv_prompts(condition){
     } else {
       condition.prompts = [
         'Can I get five more toys?',
-        'If I share my toys, can I get give more toys?'
+        'If I share my toys, can I get five more toys?'
       ]
     }
   }
@@ -387,6 +387,10 @@ const save_data = {
   filename: filename,
   data_string: ()=>jsPsych.data.get().csv()
 };
+
+// var intuition = {
+//   type: 
+// }
 
 timeline.push(participant_id); 
 timeline.push(warmup, warmup_wrong, intro_agents); 
