@@ -42,66 +42,99 @@ var KiN_response = (function (jspsych) {
       this.jsPsych = jsPsych;
     }
     trial(display_element, trial) {
-      var buttons; 
-      if (trial.trial == "attention_check_asksize"){
-        buttons = [
-        `<span style='height:10vw; width:10vw; background-color: powderblue; border-radius:50%; display: inline-block'>a little</span>`,
-        `<span style='height:20vw; width:20vw; background-color: powderblue; border-radius:50%; display: inline-block'>a lot</span>`,
-        ]
-      } else {
-        buttons = jsPsych.randomization.repeat(trial.prompts, 1); 
-      }
-      // var buttons = jsPsych.randomization.repeat(trial.prompts, 1); 
-
       let button_pressed = null;
       let response_pressed = null;
-      display_element.innerHTML = `
-        <style>
-          .container {
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            gap: 5vw; 
-          }
+      var buttons; 
+      if(trial.trial == 'attention_check_asksize'){
+        buttons = jsPsych.randomization.repeat(["alot", "alittle"], 1)
+        display_element.innerHTML += `
+          <style>
+            .imagebutton {
+              width: 25vw;
+              border: 0.7vw solid white; 
 
-          .box {
-            width: 20vw; 
-            height: 15vw;
-            background-color: ${trial.trial === 'main_DV' ? 'powderblue' : 'white'};
-            border-radius: 2vw; 
-            border: 1vw solid white; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            text-align: center; 
-            padding: 1.5vw; 
-            box-sizing: content-box; 
-            font-size: 2vw;
-            font-weight: bold;
-            line-height: 2.5vw;
-          }
-          .box.selected {
-            border: 1vw solid green;
-          }
+            }
+            .secretbutton {
+              width: 30vw;
+            }
+            .imagebutton.selected {
+              border: 0.7vw solid green;
+            }
+          </style>
+        `
+        display_element.innerHTML += `
+          <div style="display: flex; align-items: center; gap: 5vw;">
 
-          .center-img {
-            width: 15vw;
-            padding-top: 15vw;
-          }
-         </style>`
+            <div>
+              <img class="secretbutton" src="stim/more-stim/${trial.scenario}_agent_${trial.ask_size}ask.png" id="secret-button" />
+            </div>
+
+            <div>
+              <img class="imagebutton" src="stim/more-stim/${buttons[0]}.png" id="left-button" />
+              <br>
+              <img class="imagebutton" src="stim/more-stim/${buttons[1]}.png" id="right-button" />
+            </div>
+
+            </div>
+            <div style="text-align:center;">
+              <button id="next-btn" class="jspsych-btn">&#8594;</button>
+            </div>        
+          `;
+      } 
+
+      if (trial.trial == "main_dv"){
+        buttons = jsPsych.randomization.repeat(trial.prompts, 1);
+        display_element.innerHTML = `
+          <style>
+            .container {
+              display: flex; 
+              justify-content: center; 
+              align-items: center; 
+              gap: 5vw; 
+            }
+
+            .box {
+              width: 20vw; 
+              height: 15vw;
+              background-color: powderblue;
+              border-radius: 2vw; 
+              border: 1vw solid white; 
+              display: flex; 
+              align-items: center; 
+              justify-content: center; 
+              text-align: center; 
+              padding: 1.5vw; 
+              box-sizing: content-box; 
+              font-size: 2vw;
+              font-weight: bold;
+              line-height: 2.5vw;
+            }
+            .box.selected {
+              border: 1vw solid green;
+            }
+
+            .center-img {
+              width: 15vw;
+              padding-top: 15vw;
+            }
+          </style>`
+        
+        
+        display_element.innerHTML +=  `
+          <div class="container">
+            <div class="box" id="left-button">${buttons[0]}</div>
+              <img class="center-img" id="secret-button" src="stim/more-stim/${trial.scenario}-agent.png">
+            <div class="box" id="right-button">${buttons[1]}</div>
+          </div>
+
+          <div style="text-align:center; margin-top:5vw;">
+            <button id="next-btn" class="jspsych-btn">&#8594;</button>
+          </div>`;
+    }
       
-      
-      display_element.innerHTML +=  `
-        <div class="container">
-          <div class="box" id="left-button">${buttons[0]}</div>
-            <img class="center-img" id="secret-button" src="stim/more-stim/${trial.scenario}-agent.png">
-          <div class="box" id="right-button">${buttons[1]}</div>
-        </div>
+     
 
-        <div style="text-align:center; margin-top:5vw;">
-          <button id="next-btn" class="jspsych-btn">&#8594;</button>
-        </div>
-    `;
+      
       const leftButton = document.getElementById('left-button');
       const rightButton = document.getElementById('right-button');
       const secretButton = document.getElementById('secret-button');
@@ -144,11 +177,8 @@ var KiN_response = (function (jspsych) {
           button_pressed: button_pressed,
           response: response_pressed
         };
-        console.log(response_pressed);
-        //         console.log(response);
 
         if (secretbutton_pressed & choicemade){
-          console.log('here')
            this.jsPsych.finishTrial(trial_data);
         }
        

@@ -27,6 +27,15 @@ var participant_id = {
    - introduce agents before starting the full study
 */
 
+var introduction = {
+  type: jsPsychInstructions, 
+  pages: [
+    // TO-DO: add an intro slide here  
+  ], 
+  show_clickable_nav: true, 
+  allow_keys: false,  
+} 
+
 var warmup = {
   timeline: [
     // scenario
@@ -205,12 +214,16 @@ var procedure = {
       show_clickable_nav: true, 
       allow_keys: false, 
       pages: function() {
+        var scenario = jsPsych.timelineVariable('scenario')
+        var ask_size = jsPsych.timelineVariable('ask_size')
+        var interaction_history = jsPsych.timelineVariable('interaction_history')
 
-        // this is so that we know which manipulation for each scenario we are running 
+        // script code: this is so that we know which manipulation for each scenario we are running 
         const scenario_code = {food: 1,bedtime: 2,activity: 3,toy: 4};
-        const ask_size_code = {small: 1,large: 2};
+        const ask_size_code = {small: 1,big: 2};
         const interaction_history_code = {none: 1,failed: 2};
-        return ['Start']
+
+        return [(scenario_code[scenario] + "." + ask_size_code[ask_size] + "." + interaction_history_code[interaction_history])]
       }
     },
 
@@ -267,6 +280,15 @@ var procedure = {
       }
     },
 
+    // attention check 2: intuitions about ask size
+    {
+      type: KiN_response, 
+      trial: 'attention_check_asksize',
+      ask_size: jsPsych.timelineVariable('ask_size'), 
+      interaction_history:jsPsych.timelineVariable('interaction_history'),
+      scenario: jsPsych.timelineVariable('scenario'), 
+    }, 
+
     // instruction: interaction history (failed or none)
     {
       type: jsPsychInstructions,
@@ -290,11 +312,12 @@ var procedure = {
         return pages;
       }
     },
+    
 
     // main dv: negotiation vs direct
     {
       type: KiN_response, 
-      trial: 'main_DV',
+      trial: 'main_dv',
       ask_size: jsPsych.timelineVariable('ask_size'), 
       interaction_history:jsPsych.timelineVariable('interaction_history'),
       scenario: jsPsych.timelineVariable('scenario'), 
@@ -388,15 +411,12 @@ const save_data = {
   data_string: ()=>jsPsych.data.get().csv()
 };
 
-// var intuition = {
-//   type: 
-// }
 
 timeline.push(participant_id); 
+// timeline.push(introduction); 
 timeline.push(warmup, warmup_wrong, intro_agents); 
 timeline.push(procedure);
 timeline.push(save_data); 
-
 
 
 jsPsych.run(timeline);
