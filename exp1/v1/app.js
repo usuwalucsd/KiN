@@ -52,7 +52,7 @@ var warmup = {
     // button response
     {
       type: KiN_response, 
-      trial: "main_DV",
+      trial: "main_dv",
       scenario: "warmup",
       prompts: [
         "Can I get crayons?", 
