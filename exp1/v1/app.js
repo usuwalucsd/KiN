@@ -430,6 +430,18 @@ var procedure = {
   timeline_variables: conditions,
 };
 
+var success = {
+  type: jsPsychInstructions, 
+  pages: [
+    'All good!' 
+  ], 
+  show_clickable_nav: true, 
+  allow_keys: false,
+  button_label_next: "Finish",
+  allow_backward: false,
+ 
+} 
+
 // datapipe 
 const subject_id = jsPsych.randomization.randomID(10);
 const filename = `${subject_id}.csv`;
@@ -451,5 +463,6 @@ timeline.push(introduction);
 timeline.push(warmup, warmup_wrong, intro_agents); 
 timeline.push(procedure);
 timeline.push(save_data); 
+timeline.push(success);
 
 jsPsych.run(timeline);
