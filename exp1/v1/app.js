@@ -1,8 +1,8 @@
  
 var jsPsych = initJsPsych({
-  on_finish: function() {
-    jsPsych.data.displayData();
-  }
+  // on_finish: function() {
+  //   jsPsych.data.displayData();
+  // }
 });
 
 var timeline = []; 
@@ -30,10 +30,13 @@ var participant_id = {
 var introduction = {
   type: jsPsychInstructions, 
   pages: [
-    // TO-DO: add an intro slide here  
+    ' ' 
   ], 
   show_clickable_nav: true, 
-  allow_keys: false,  
+  allow_keys: false,
+  button_label_next: "Start",
+  allow_backward: false,
+ 
 } 
 
 var warmup = {
@@ -54,10 +57,10 @@ var warmup = {
       type: KiN_response, 
       trial: "main_dv",
       scenario: "warmup",
-      prompts: [
+      prompts: jsPsych.randomization.repeat([
         "Can I get crayons?", 
         "Can I get a teddy bear?"
-      ],
+      ], 1),
       on_finish: function(data){
         data.correct = data.response === "Can I get crayons?"
       }
@@ -108,6 +111,7 @@ var intro_agents = {
    - four blocks: four conditions randomly assigned to a scenario 
    - blocks are randomized  
 */
+
 
 var conditions = [
   {
@@ -196,6 +200,9 @@ function dv_prompts(condition){
       ]
     }
   }
+  condition.prompts = jsPsych.randomization.repeat(condition.prompts, 1);
+  console.log('hello')
+  console.log(condition);
 } 
 
 /* procedure holds the main task structure 
@@ -209,6 +216,7 @@ function dv_prompts(condition){
 
 var procedure = {
   timeline: [
+    // for experimenters: this slide helps the experimenters figure out which script to run
     {
       type: jsPsychInstructions,
       show_clickable_nav: true, 
@@ -258,7 +266,7 @@ var procedure = {
         if (scenario == 'food'){
           return [{prompt: "How many candies is Sally allowed to eat?", rows: 1, required: true}];
         } else if (scenario == 'bedtime'){
-          return [{prompt: "When is Bobby's bedtime?", rows: 1, required: true}];  
+          return [{prompt: "What time does Bobby have to go to bed?", rows: 1, required: true}];  
         } else if (scenario == 'toy'){
           return [{prompt: "How many toys is Jordan allowed to get at the toy store?", rows: 1, required: true}]; 
         } else if (scenario == 'activity'){
@@ -299,9 +307,9 @@ var procedure = {
         var ask_size = jsPsych.timelineVariable('ask_size')
         var interaction_history = jsPsych.timelineVariable('interaction_history');
         var pages = [];
-        if (interaction_history == "none"){
-          pages.push(`<img/src='stim/${scenario}/${scenario}_nointeraction.png' style='max-width:100%'>`)
-        } else {
+        pages.push(`<img/src='stim/${scenario}/${scenario}_nointeraction.png' style='max-width:100%'>`)
+
+        if (interaction_history == "failed"){
           pages.push(
             `<img/src='stim/${scenario}/${scenario}_parent.png' style='max-width:100%'>`,
             `<img/src='stim/${scenario}/${scenario}_child_ask_parent_${ask_size}.png' style='max-width:100%'>`,
@@ -351,6 +359,19 @@ var procedure = {
       enable_button_after : 12000, 
 
     }, 
+
+    // page between two follow-ups: adding this because 
+    // children just like to press on the buttons immediately otherwise
+    {
+      type: jsPsychInstructions, 
+      pages: [
+        ''        
+      ], 
+      show_clickable_nav: true, 
+      allow_keys: false, 
+      allow_backward: false,  
+    },
+
     
     // followup 2: likelihood follow up for request
     {
@@ -394,7 +415,7 @@ var procedure = {
     
 
   ],
-  timeline_variables: conditions
+  timeline_variables: conditions,
 };
 
 // datapipe 
@@ -403,20 +424,20 @@ const filename = `${subject_id}.csv`;
 
 // jsPsych.data.get().addToAll({participant_id: participant_code});
 
+
 const save_data = {
   type: jsPsychPipe,
   action: "save",
-  experiment_id: "X1t4NyATuKeH",
+  experiment_id: "pa8fFo0rDluy",
   filename: filename,
   data_string: ()=>jsPsych.data.get().csv()
 };
 
 
 timeline.push(participant_id); 
-// timeline.push(introduction); 
+timeline.push(introduction); 
 timeline.push(warmup, warmup_wrong, intro_agents); 
 timeline.push(procedure);
 timeline.push(save_data); 
-
 
 jsPsych.run(timeline);
