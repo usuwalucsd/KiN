@@ -7,6 +7,17 @@ var jsPsych = initJsPsych({
 
 var timeline = []; 
 
+var preload = {
+  type: jsPsychPreload, 
+  images: [
+    "stim/activity/activity_background.png", "stim/activity/activity_bigask.png", "stim/activity/activity_child_ask_parent_big.png", "stim/activity/activity_child_ask_parent_small.png", "stim/activity/activity_intro.png", "stim/activity/activity_nointeraction.png", "stim/activity/activity_parent_deny.png", "stim/activity/activity_parent.png", "stim/activity/activity_question.png", "stim/activity/activity_rule_A.png", "stim/activity/activity_rule_B.png", "stim/activity/activity_rule_C.png", "stim/activity/activity_smallask.png", "stim/activity/activity-thankyou.png",
+"stim/bedtime/bedtime_child_ask_parent_small.png", "stim/bedtime/bedtime_background.png", "stim/bedtime/bedtime_bigask.png", "stim/bedtime/bedtime_child_ask_parent_big.png", "stim/bedtime/bedtime_intro.png", "stim/bedtime/bedtime_nointeraction.png", "stim/bedtime/bedtime_parent_deny.png", "stim/bedtime/bedtime_parent.png", "stim/bedtime/bedtime_question.png", "stim/bedtime/bedtime_rule_A.png", "stim/bedtime/bedtime_rule_B.png", "stim/bedtime/bedtime_smallask.png", "stim/bedtime/bedtime-thankyou.png",
+"stim/food/food_bigask.png", "stim/food/food_background.png", "stim/food/food_child_ask_parent_big.png", "stim/food/food_child_ask_parent_small.png", "stim/food/food_intro.png", "stim/food/food_nointeraction.png", "stim/food/food_parent_deny.png", "stim/food/food_parent.png", "stim/food/food_question.png", "stim/food/food_rule_A.png", "stim/food/food_rule_B.png", "stim/food/food_rule_C.png", "stim/food/food_smallask.png", "stim/food/food-thankyou.png",
+"stim/toy/toy_bigask.png", "stim/toy/toy_background.png", "stim/toy/toy_child_ask_parent_big.png", "stim/toy/toy_child_ask_parent_small.png", "stim/toy/toy_intro.png", "stim/toy/toy_nointeraction.png", "stim/toy/toy_parent_deny.png", "stim/toy/toy_parent.png", "stim/toy/toy_question.png", "stim/toy/toy_rule_A.png", "stim/toy/toy_rule_B.png", "stim/toy/toy_smallask.png", "stim/toy/toy-thankyou.png",
+"stim/warmup/warmup_intro.png", "stim/warmup/warmup_background.png", "stim/warmup/warmup_correct_consequence.png", "stim/warmup/warmup_correct.png", "stim/warmup/warmup_crayons.png", "stim/warmup/warmup_incorrect.png", "stim/warmup/warmup_question.png",
+ "stim/more-stim/alittle.png", "stim/more-stim/activity_agent_smallask.png", "stim/more-stim/activity-agent.png", "stim/more-stim/acvitity_agent_bigask.png", "stim/more-stim/agents.png", "stim/more-stim/alot.png", "stim/more-stim/bedtime_agent_bigask.png", "stim/more-stim/bedtime_agent_smallask.png", "stim/more-stim/bedtime-agent.png", "stim/more-stim/circle.png", "stim/more-stim/food_agent_bigask.png", "stim/more-stim/food_agent_smallask.png", "stim/more-stim/food-agent.png", "stim/more-stim/maybe.png", "stim/more-stim/no.png", "stim/more-stim/square.png", "stim/more-stim/toy_agent_bigask.png", "stim/more-stim/toy_agent_smallask.png", "stim/more-stim/toy-agent.png", "stim/more-stim/warmup-agent.png", "stim/more-stim/yes.png",
+]
+}
 
 var participant_id = {
   type: jsPsychSurveyText,
@@ -17,6 +28,7 @@ var participant_id = {
       participant_code = (trial.response["Q0"])
   }, 
 };
+
 
 
 
@@ -356,7 +368,7 @@ var procedure = {
         </button>
       `, 
       margin_horizontal: '4vw', 
-      enable_button_after : 12000, 
+      enable_button_after : 9000, 
 
     }, 
 
@@ -397,7 +409,7 @@ var procedure = {
         </button>
       `, 
       margin_horizontal: '4vw', 
-      enable_button_after : 12000, 
+      enable_button_after : 9000, 
 
     }, 
 
@@ -433,7 +445,7 @@ const save_data = {
   data_string: ()=>jsPsych.data.get().csv()
 };
 
-
+timeline.push(preload);
 timeline.push(participant_id); 
 timeline.push(introduction); 
 timeline.push(warmup, warmup_wrong, intro_agents); 
