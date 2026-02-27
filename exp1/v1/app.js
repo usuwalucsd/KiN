@@ -179,8 +179,8 @@ function dv_prompts(condition){
       ]
     } else {
       condition.prompts = [
-        'Can I play five more round of games?',
-        'If I clean my room, can I play five more round of games?'
+        'Can I play five more rounds of games?',
+        'If I clean my room, can I play five more rounds of games?'
       ]
     }
   }
