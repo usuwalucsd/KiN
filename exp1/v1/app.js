@@ -3,6 +3,8 @@ var jsPsych = initJsPsych({
   // on_finish: function() {
   //   jsPsych.data.displayData();
   // }
+  on_finish: function(){jsPsych.data.get().localSave('csv', subject_id + '.csv');}
+
 });
 
 var timeline = []; 
