@@ -1,0 +1,8 @@
+"0",""
+"0","ggplot(all_data, aes(x = experimenter, y = negotiating_request, fill=interaction_history)) +"
+"0","  stat_summary(fun=mean, geom='bar', position = position_dodge()) +"
+"0","  scale_fill_manual(values = c(""failed"" = ""#89B3F0"",""none"" = ""#F0D87F""))+"
+"0","  # geom_bar(stat = ""identity"", position = ""dodge"") +"
+"0","  labs(title= ""Experimeter and Interaction History Effects on Proportion of Negotiating Requests"","
+"0","       y = ""Proportion of Negotiating Requests"", x = ""Experimenter"") + "
+"0","  theme_light()"

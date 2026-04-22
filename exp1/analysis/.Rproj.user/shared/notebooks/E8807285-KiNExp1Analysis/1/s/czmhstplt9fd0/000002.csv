@@ -1,0 +1,82 @@
+"1","
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYWxsX2RhdGEgPC0gYWxsX2RhdGEgJT4lXG4gIG11dGF0ZShcbiAgICAjIG5lZ290aWF0aW5nX3JlcXVlc3QgPSBhcy5pbnRlZ2VyKHN0YXJ0c1dpdGgoZHYsIFwiSWZcIikpLFxuICAgIG1hZ25pdHVkZV9jID0gaWZlbHNlKGFza19zaXplID09IFwic21hbGxcIiwgLTAuNSwgMC41KSxcbiAgICBpbnRlcmFjdGlvbl9oaXN0b3J5X2MgPSBpZmVsc2UoaW50ZXJhY3Rpb25faGlzdG9yeSA9PSBcIm5vbmVcIiwgLTAuNSwgMC41KVxuICApXG5cbiMgbW9kZWwgZmFpbHMgdG8gY29udmVyZ2Vcbm1vZGVsIDwtIGdsbWVyKFxuICBuZWdvdGlhdGluZ19yZXF1ZXN0IH4gbWFnbml0dWRlX2MgKyBpbnRlcmFjdGlvbl9oaXN0b3J5X2MgKyBcbiAgICAoMSArIG1hZ25pdHVkZV9jICsgaW50ZXJhY3Rpb25faGlzdG9yeV9jIHwgcGFydGljaXBhbnRfaWQpLFxuICBkYXRhID0gYWxsX2RhdGEsXG4gIGZhbWlseSA9IGJpbm9taWFsXG4pXG5cbnN1bW1hcnkobW9kZWwpXG5cbiMgbW9kZWwgKHdpdGhvdXQgc2xvcGVzIGZvciBpbnRlcmFjdGlvbl9oaXN0b3J5KVxubW9kZWwyIDwtIGdsbWVyKFxuICBuZWdvdGlhdGluZ19yZXF1ZXN0IH4gbWFnbml0dWRlX2MgKyBpbnRlcmFjdGlvbl9oaXN0b3J5X2MgKyBcbiAgICAoMSArIG1hZ25pdHVkZV9jICB8IHBhcnRpY2lwYW50X2lkKSxcbiAgZGF0YSA9IGFsbF9kYXRhLFxuICBmYW1pbHkgPSBiaW5vbWlhbFxuKVxuXG5zdW1tYXJ5KG1vZGVsMilcblxuIyBtb2RlbCAod2l0aG91dCBzbG9wZXMgZm9yIG1hZ25pdHVkZV9jKVxubW9kZWwzIDwtIGdsbWVyKFxuICBuZWdvdGlhdGluZ19yZXF1ZXN0IH4gbWFnbml0dWRlX2MgKyBpbnRlcmFjdGlvbl9oaXN0b3J5X2MgKyBcbiAgICAoMSB8IHBhcnRpY2lwYW50X2lkKSxcbiAgZGF0YSA9IGFsbF9kYXRhLFxuICBmYW1pbHkgPSBiaW5vbWlhbFxuKVxuXG5zdW1tYXJ5KG1vZGVsMylcbmBgYCJ9 -->
+
+```r
+all_data <- all_data %>%
+  mutate(
+    # negotiating_request = as.integer(startsWith(dv, \"If\")),
+    magnitude_c = ifelse(ask_size == \"small\", -0.5, 0.5),
+    interaction_history_c = ifelse(interaction_history == \"none\", -0.5, 0.5)
+  )
+
+# model fails to converge
+model <- glmer(
+  negotiating_request ~ magnitude_c + interaction_history_c + 
+    (1 + magnitude_c + interaction_history_c | participant_id),
+  data = all_data,
+  family = binomial
+)
+
+summary(model)
+
+# model (without slopes for interaction_history)
+model2 <- glmer(
+  negotiating_request ~ magnitude_c + interaction_history_c + 
+    (1 + magnitude_c  | participant_id),
+  data = all_data,
+  family = binomial
+)
+
+summary(model2)
+
+# model (without slopes for magnitude_c)
+model3 <- glmer(
+  negotiating_request ~ magnitude_c + interaction_history_c + 
+    (1 | participant_id),
+  data = all_data,
+  family = binomial
+)
+
+summary(model3)
+```
+
+<!-- rnb-source-end -->
+"
+"0","```r
+all_data <- all_data %>%
+  mutate(
+    # negotiating_request = as.integer(startsWith(dv, \"If\")),
+    magnitude_c = ifelse(ask_size == \"small\", -0.5, 0.5),
+    interaction_history_c = ifelse(interaction_history == \"none\", -0.5, 0.5)
+  )
+
+# model fails to converge
+model <- glmer(
+  negotiating_request ~ magnitude_c + interaction_history_c + 
+    (1 + magnitude_c + interaction_history_c | participant_id),
+  data = all_data,
+  family = binomial
+)
+
+summary(model)
+
+# model (without slopes for interaction_history)
+model2 <- glmer(
+  negotiating_request ~ magnitude_c + interaction_history_c + 
+    (1 + magnitude_c  | participant_id),
+  data = all_data,
+  family = binomial
+)
+
+summary(model2)
+
+# model (without slopes for magnitude_c)
+model3 <- glmer(
+  negotiating_request ~ magnitude_c + interaction_history_c + 
+    (1 | participant_id),
+  data = all_data,
+  family = binomial
+)
+
+summary(model3)
+```"

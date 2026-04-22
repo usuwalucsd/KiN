@@ -1,0 +1,2 @@
+"0","processed_data_directory <- here("".."",""data"",""processed_data"")"
+"0","all_data <- read.csv(paste0(processed_data_directory, ""/"", ""Exp1_processed_data.csv""))"

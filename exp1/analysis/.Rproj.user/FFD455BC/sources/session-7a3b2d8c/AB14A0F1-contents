@@ -1,0 +1,367 @@
+# This script runs models and sanity checks
+# Experiment: SciApp3
+# 9.04.2025
+
+# input:		clean RData
+#
+# output:		model
+#
+#			
+### SCRIPT BEGIN ##########################################################
+
+# remove everything from environment
+rm(list = ls(all=TRUE))
+
+# load packages
+library(lme4)
+library(glmmTMB)
+library(car)
+library(ggplot2)
+library(sjPlot)
+library(sjlabelled)
+library(sjmisc)
+library(tidyverse)
+source("/Volumes/ubps-all$/Language_Acquisition/Staff/Wortschatz intern/Ricarda/XCat/Analysis_info_functions/functions_Roger/helpers.r")
+
+#####################################################################################  
+########################################## pedagogical sampling #####################
+#####################################################################################
+#RQ mum: does mom sample objects pedagogically for their child? / seek info exploratorily?
+#RQ child: does the child sample objects pedagogically for themselves?/ seek info exploratorily or confirmatorily?
+d_samp=read.csv("~/Desktop/Analyses/Ricarda/SciApp3/touchdata/sampling.csv",
+            header=T, sep=",")
+d_test=read.csv("~/Desktop/Analyses/Ricarda/SciApp3/touchdata/SciApp3_clean_d_final.csv",
+                header=T, sep=",")
+# equal number of kids in sampling and test data set?
+setdiff(unique(d_samp$ID), unique(d_test$ID)) #remove ID 23 in sampling data set
+nrow(d_samp)
+d_samp=subset(d_samp, ID!=23)
+nrow(d_samp)
+
+d_samp <- d_samp %>%
+  arrange(ID_image, block_number)
+
+xdemo_samp <-d_samp %>% 
+  group_by(choice) %>% 
+  summarise(
+    nchild=n_distinct(ID),
+    ntrials = n(),
+    Mage = round(mean(age), 2),
+    SDage = round(sd(age),2),
+    MinAge = min(age, na.rm = TRUE),
+    MaxAge = max(age, na.rm = TRUE),
+    nUniqueFemales = n_distinct(ID[s == "w"])
+  )
+
+# RANDOM EFFECT STRUCTURE
+
+xx=table(d_samp$ID, d_samp$block_number) 
+table(apply(xx>1, 1, sum)) #slope block_number on ID 
+
+unique(d_samp$ID_image)
+d_samp$targetImage <- gsub("^[0-9]+ _ ", "", d_samp$ID_image)
+unique(d_samp$targetImage)
+xx=table(d_samp$targetImage, d_samp$block_number) 
+table(apply(xx>1, 1, sum)) #slope block_number on targetLabel
+xx=table(d_samp$targetImage, d_samp$choice) 
+table(apply(xx>1, 1, sum)) #slope choice on targetLabel
+
+# subset only exp data (no familiarization phase)
+nrow(d_samp)
+d_samp=subset(d_samp, block_number!=1)
+nrow(d_samp)
+
+# Centering age
+d_samp$z.age=as.vector(scale(d_samp$age))
+
+#relevel factors 
+d_samp$block_number <- as.factor(d_samp$block_number)
+d_samp$block_number=relevel(x=d_samp$block_number, ref="2")
+d_samp$block_number.code=as.numeric(d_samp$block_number=="2")
+# b2 is 1st experimental block
+
+d_samp$choice <- as.factor(d_samp$choice)
+d_samp$choice=relevel(d_samp$choice, ref="passive")
+d_samp$choice.code=as.numeric(d_samp$choice==levels(d_samp$choice)[2])
+# active is 0
+
+## response
+# check whether an object was labelled prior to sampling phase
+d_samp$Learn=as.numeric(d_samp$Learn)
+d_samp$Sampling=as.numeric(d_samp$Sampling)
+d_samp$response <- ifelse(d_samp$Learn ==0 & d_samp$Sampling>0, 1, #exploratory
+                          ifelse(d_samp$Learn>0 & d_samp$Sampling>0, 0, NA)) #confirmatory
+# only keep trials were participants sampled
+nrow(d_samp)
+d_samp <- subset(d_samp, !is.na(response))
+nrow(d_samp)
+
+#GLMM binary logistic regression (either 0 or 1)
+library(lme4)
+# 1st MODEL reported (TABLE 2)
+M1.no.int = glmer(response ~ 1+ choice+block_number + z.age +
+             (1 | ID) + 
+             (1 | targetImage), 
+           family = binomial(link = "logit"), # Logistic link function
+           data = d_samp, 
+           control = glmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 100000)))
+
+round(summary(M1.no.int)$coefficients, 3)
+test = round(as.data.frame(drop1(M1.no.int, test="Chisq")), 3)
+
+# report model 
+tab_model.M1.no.int <-tab_model(M1.no.int, show.stat=T, show.est = T, transform = NULL, show.se = T, 
+                      show.p = T, digits = 3, dv.labels = "sampling (exploratory=1, confirmatory=0")# ,show.df=T, show.aic = T, show.std = T)
+
+#######################################
+## power analysis on sampling effect ##
+# take out block and age since these were not significant
+# look at difference between children's and mother's sampling choice
+M1.power <- glmer(response ~ 1 + choice+ 
+                        (1 | ID) + 
+                        (1 | targetImage), 
+                      data = d_samp, family = binomial(link = "logit")) 
+round(summary(M1.power)$coefficients, 3)
+
+#effect sizes
+coefs <- fixef(M1.power)
+coefs["choicepassive"] <- 0.5
+coefs
+
+# simulations
+library(simr)
+power_samp <- powerSim(M1.power, test = fixed("choice"), nsim= 1000)
+summary(power_samp)
+# Out of 1000 simulations, the effect was successfully detected in all 1000 meaning 100% power
+# The 95% confidence (or credible) interval for this power estimate is between ~99.63% and 100%
+####
+
+### supplementary materials Table S1 ###
+# M1.1
+#d_samp$n.labels = d_samp$Learn+d_samp$Sampling
+
+# Does not converge
+#M1.1.learn = glmer(Learn ~ 1+ choice*block_number + z.age +
+#               (1 | ID) + 
+#               (1 | targetImage), 
+#             family = poisson, data = d_samp)
+#test = round(as.data.frame(drop1(M1.1, test="Chisq")), 3)
+# with increasing age, less word object repetition: z.age -0.079      0.040  -1.965    0.049
+
+M1.1.learn.no.int = glmer(Learn ~ 1+ choice+block_number + z.age +
+               (1 | ID) + 
+              (1 | targetImage), 
+             family = poisson, data = d_samp)
+test = round(as.data.frame(drop1(M1.1.learn.no.int, test="Chisq")), 3)
+round(summary(M1.1.learn.no.int)$coefficients, 3)
+# mothers were less likely to sample objects when overall labelling was high (labelling in learning phase)
+#  choicepassive                 -0.374      0.071  -5.302    0.000
+max(d_samp$Learn) #6
+table(d_samp$Learn)
+hist(d_samp$Learn)
+#labelling in both phases
+mean(d_samp$Learn[grepl("both", d_samp$naming)])
+sd(d_samp$Learn[grepl("both", d_samp$naming)])
+#labelling in sampling phase only
+mean(d_samp$Sampling[grepl("samp", d_samp$naming)])
+sd(d_samp$Sampling[grepl("samp", d_samp$naming)])
+
+#TABLE S1
+tab_model.M1.1.learn.no.int <-tab_model(M1.1.learn.no.int, show.stat=T, show.est = T, transform = NULL, show.se = T, 
+                           show.p = T, digits = 3, dv.labels = "sampling behaviour")# ,show.df=T, show.aic = T, show.std = T)
+
+#####################################################################################  
+########################################## Accuracy Models ##########################
+#####################################################################################
+d_test <- d_test %>%
+  arrange(ID, block_number)
+
+d_test_aggregated <- d_test %>%
+  group_by(ID, targetLabel) %>%
+  summarise(across(everything(), mean, na.rm = TRUE))
+xdemo_test <-d_test_aggregated %>% 
+  ungroup() %>% 
+  summarise(
+    nchild=n_distinct(ID),
+    ntrials = n(),
+    Mage = round(mean(age), 2),
+    SDage = round(sd(age),2),
+    MinAge = min(age, na.rm = TRUE),
+    MaxAge = max(age, na.rm = TRUE),
+    nUniqueFemales = n_distinct(ID[sex == "w"])
+  )
+d_test$response_M2 <- ifelse(d_test$match=="True", 1,
+                             ifelse(d_test$match=="False", 0, NA))
+
+# remove trials where children did not choose an object at test
+d_test <- subset(d_test, !is.na(response_M2))
+nrow(d_test)
+(1744/1832)*100 #4.80349% of data removed
+
+############################################
+# dropouts
+library(openxlsx)
+participant_sheet <- read.xlsx("~/Desktop/Analyses/Ricarda/SciApp3/touchdata/SciApp3_Uebersichtstabelle.xlsx")
+sort(unique(participant_sheet$ID))
+participant_sheet$Testing <- gsub("dopout", "dropout", participant_sheet$Testing)
+sort(unique(participant_sheet$dropout_reason))
+summary_dropouts <- participant_sheet %>%
+  group_by(Testing, dropout_reason) %>%
+  summarize(count = n(), .groups = "drop_last") %>%
+  arrange(desc(count))  # Arrange in descending order of count
+sort(unique(summary_dropouts$Testing))
+
+# 14 technical issues
+# 3 fuzzy or did not want to participate
+# 2 siblings were sitting on lap
+# --> 19 dropouts + 46 exp = 65 kids tested
+(19/65)*100 #29.23 % dropouts
+############################################
+
+# RANDOM EFFECT STRUCTURE
+table(d_test$ID, d_test$choice) 
+xx=table(d_test$ID, d_test$choice) 
+table(apply(xx>1, 1, sum)) #slope choice on ID
+
+xx=table(d_test$ID, d_test$block_number) 
+table(apply(xx>1, 1, sum)) #slope block_number on ID 
+
+xx=table(d_test$targetLabel, d_test$block_number) 
+table(apply(xx>1, 1, sum)) #slope block_number on targetLabel
+
+length(unique(d_test$ID))
+range(d_test$age)
+mean(d_test$age)
+sd(d_test$age) 
+length(unique(d_test$ID[d_test$sex=="w"]))#20
+length(unique(d_test$ID[d_test$sex=="m"]))#26
+
+d_test <- as.data.frame(d_test)
+
+# Centering age
+d_test$z.age=as.vector(scale(d_test$age))
+
+# subset only learning data (no familiarization)
+sort(unique(d_test$block_number))
+nrow(d_test)
+d_test=subset(d_test, block_number!=1)
+nrow(d_test)
+
+# relevel factor in fixed effect structure
+d_test$block_number <- as.factor(d_test$block_number)
+d_test$block_number=relevel(x=d_test$block_number, ref="2")
+d_test$choice <- as.factor(d_test$choice)
+d_test$choice=relevel(d_test$choice, ref="passive")
+#condition: whether sampled or not
+sort(unique(d_test$naming_phase))
+table(d_test$block_number,d_test$naming_phase)
+d_test$condition <- ifelse(grepl("both", d_test$naming_phase), 1,
+                           ifelse(grepl("learn", d_test$naming_phase), 0, NA))
+table(d_test$block_number,d_test$condition)
+d_test$condition <- as.factor(d_test$condition)
+d_test$condition <- relevel(x=d_test$condition, ref="0")
+
+table(d_test$condition, d_test$block_number)
+
+# level slopes in RE
+d_test$condition.code=as.numeric(d_test$condition=="0")
+# only labelled in learning phase is ref
+d_test$choice.code=as.numeric(d_test$choice==levels(d_test$choice)[2])
+# active is 0
+d_test$block_number.code=as.numeric(d_test$block_number=="2")
+# T1 is 1
+
+## mean values per group ##
+Means.cab <- aggregate(
+  response_M2 ~ condition + 
+    block_number,# + naming_phase, 
+  d_test, 
+  function(x) c(mean = round(mean(x), 3), sd = round(sd(x), 3))
+)
+table(d_test$response_M2)
+
+## GLMMs ##
+#### pedagogical influence on learning ####
+
+#condition: whether sampled or not
+sort(unique(d_test$naming_phase))
+table(d_test$block_number,d_test$naming_phase)
+d_test$condition_samp <- ifelse(grepl("both", d_test$naming_phase), 1,
+                           ifelse(grepl("samp", d_test$naming_phase), 0, NA))
+table(d_test$block_number,d_test$condition_samp)
+d_test$condition_samp <- as.factor(d_test$condition_samp)
+d_test$condition_samp <- relevel(x=d_test$condition_samp, ref="0")
+
+table(d_test$condition_samp, d_test$block_number)
+
+# level slopes in RE
+d_test$condition_samp.code=as.numeric(d_test$condition_samp=="0")
+# only labelled in learning phase is ref
+
+#M3_3wi = glmer(response_M2 ~ 1+ choice*condition_samp*block_number + z.age +
+#             (1 | ID)+ 
+#               (1 | block_number), 
+#           family = binomial, data = d_test, 
+#           control=glmerControl(optimizer="nloptwrap", optCtrl=list(maxfun=100000)))
+#did not converge; reduce 3-w-i
+
+# TABLE 3
+M3 = glmer(response_M2 ~ 1+ choice*condition_samp+block_number + z.age +
+            (1 | ID) + 
+             (1 | block_number), 
+           family = binomial, data = d_test, 
+           control=glmerControl(optimizer="nloptwrap", optCtrl=list(maxfun=100000)))
+
+round(as.data.frame(drop1(M3, test="Chisq")), 3)
+summary(M3)$varcor
+round(summary(M3)$coefficients, 3)
+table(d_test$choice, d_test$condition_samp)
+tab_model_M3 <-tab_model(M3, show.stat=T, show.est = T, transform = NULL, show.se = T, 
+                         show.p = T, digits = 3, dv.labels = "response accuracy")# ,show.df=T, show.aic = T, show.std = T)
+
+
+Means.cab1 <- aggregate(
+  response_M2 ~ condition_samp + choice,
+   # block_number,# + naming_phase, 
+  d_test, 
+  function(x) c(mean = round(mean(x), 3), sd = round(sd(x), 3))
+)
+table(d_test$response_M2)
+
+both.test <- subset(d_test, d_test$condition_samp=="1")
+both.test$z.age=as.vector(scale(both.test$age))
+
+M3.both = glmer(response_M2 ~ 1+ choice+block_number + z.age +
+             (1 | ID) + 
+             (1 | block_number), 
+           family = binomial, data = both.test, 
+           control=glmerControl(optimizer="nloptwrap", optCtrl=list(maxfun=100000)))
+round(as.data.frame(drop1(M3.both, test="Chisq")), 3)
+summary(M3.both)$varcor
+round(summary(M3.both)$coefficients, 3)
+
+samp.test <- subset(d_test, d_test$condition_samp=="0")
+samp.test$z.age=as.vector(scale(samp.test$age))
+
+M3.samp = glmer(response_M2 ~ 1+ choice + block_number+ z.age +
+                   (1 | ID) + 
+                   (1 | block_number), 
+                 family = binomial, data = samp.test, 
+                 control=glmerControl(optimizer="nloptwrap", optCtrl=list(maxfun=100000)))
+
+round(as.data.frame(drop1(M3.samp, test="Chisq")), 3)
+summary(M3.samp)$varcor
+round(summary(M3.samp)$coefficients, 3)
+
+## report models 
+#TABLE  S2
+tab_model_M3.samp.both <-tab_model(M3.samp, M3.both, show.stat=T, show.est = T, transform = NULL, show.se = T, 
+                         show.p = T, digits = 3, dv.labels = "correct responses")# ,show.df=T, show.aic = T, show.std = T)
+
+save.image("~/Desktop/sciapp3/NM_RB/allmodels.RData")
+load("~/Desktop/Analyses/Ricarda/SciApp3/touchdata/allmodels.RData")
+
+
+####################################
+######### end of script ############
+####################################

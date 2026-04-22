@@ -1,0 +1,7 @@
+"0","for (package in c(""tidyverse"", ""dplyr"", ""jsonlite"", ""lme4"", ""here"", ""glue"", ""utils"")) {"
+"0","  suppressWarnings("
+"0","    suppressPackageStartupMessages("
+"0","      library(package, character.only = TRUE)"
+"0","      )"
+"0","    )"
+"0","}"

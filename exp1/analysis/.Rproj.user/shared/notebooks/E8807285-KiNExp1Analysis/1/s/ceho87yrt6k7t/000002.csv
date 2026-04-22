@@ -1,0 +1,58 @@
+"1","
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxud2FybXVwIDwtIGZ1bmN0aW9uKGNzdil7XG4gIGRhdGEgPC0gcmVhZC5jc3YoY3N2KSAlPiVcbiAgbXV0YXRlKHBhcnRpY2lwYW50X2lkID0gZnJvbUpTT04oLiRyZXNwb25zZVsyXSlbWzFdXSkgJT4lXG4gIGZpbHRlcihzY2VuYXJpbyA9PSAnd2FybXVwJylcbiAgXG4gIHJldHVybiAoZGF0YSlcbn1cblxuZXhjbHVzaW9uIDwtIGxpc3QuZmlsZXMoXCIuL2RhdGFcIiwgcGF0dGVybiA9IFwiKi5jc3ZcIiwgZnVsbC5uYW1lcyA9IFRSVUUpICU+JVxuICBtYXBfZGZyKHdhcm11cCkgJT4lIFxuICBmaWx0ZXIoZ3JlcGwoXCJecFxcXFxkezN9JFwiLCBwYXJ0aWNpcGFudF9pZCkpICU+JSBcbiAgZ3JvdXBfYnkocGFydGljaXBhbnRfaWQpICU+JVxuICBzdW1tYXJpc2UoYWxsX2luY29ycmVjdCA9IGFsbChjb3JyZWN0ID09ICdmYWxzZScpLCAuZ3JvdXBzID0gXCJkcm9wXCIpICU+JVxuICBmaWx0ZXIoYWxsX2luY29ycmVjdCkgJT4lXG4gIHB1bGwocGFydGljaXBhbnRfaWQpXG5cbmV4Y2x1c2lvblxuYGBgIn0= -->
+
+```r
+warmup <- function(csv){
+  data <- read.csv(csv) %>%
+  mutate(participant_id = fromJSON(.$response[2])[[1]]) %>%
+  filter(scenario == 'warmup')
+  
+  return (data)
+}
+
+exclusion <- list.files(\"./data\", pattern = \"*.csv\", full.names = TRUE) %>%
+  map_dfr(warmup) %>% 
+  filter(grepl(\"^p\\d{3}$\", participant_id)) %>% 
+  group_by(participant_id) %>%
+  summarise(all_incorrect = all(correct == 'false'), .groups = \"drop\") %>%
+  filter(all_incorrect) %>%
+  pull(participant_id)
+
+exclusion
+```
+
+<!-- rnb-source-end -->
+"
+"0","```r
+warmup <- function(csv){
+  data <- read.csv(csv) %>%
+  mutate(participant_id = fromJSON(.$response[2])[[1]]) %>%
+  filter(scenario == 'warmup')
+  
+  return (data)
+}
+
+exclusion <- list.files(\"./data\", pattern = \"*.csv\", full.names = TRUE) %>%
+  map_dfr(warmup) %>% 
+  filter(grepl(\"^p\\d{3}$\", participant_id)) %>% 
+  group_by(participant_id) %>%
+  summarise(all_incorrect = all(correct == 'false'), .groups = \"drop\") %>%
+  filter(all_incorrect) %>%
+  pull(participant_id)
+
+exclusion
+```"
+"1","character(0)
+"
+"1","
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBubyBwYXJ0aWNpcGFudHMgZXhjbHVkZWQgcGVyIGV4Y2x1c2lvbiBjcml0ZXJpYVxuYGBgIn0= -->
+
+```r
+# no participants excluded per exclusion criteria
+```
+
+<!-- rnb-source-end -->
+"
+"0","```r
+# no participants excluded per exclusion criteria
+```"

@@ -1,0 +1,108 @@
+"1","
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGFydGljaXBhbnRfZGF0YSA8LSBmdW5jdGlvbihjc3YpIHtcbiAgZGF0YSA8LSByZWFkLmNzdihjc3YpICU+JVxuICBtdXRhdGUocGFydGljaXBhbnRfaWQgPSBmcm9tSlNPTiguJHJlc3BvbnNlWzJdKVtbMV1dKSAlPiVcbiAgZmlsdGVyKHRyaWFsX3R5cGUgJWluJSBjKCdLaU5fcmVzcG9uc2UnLCAnc3VydmV5LXRleHQnLCAnaHRtbC1idXR0b24tcmVzcG9uc2UnKSkgJT4lXG4gICAgXG4gICAgIyBzb21lIHBhcnRpY2lwYW50cyBtYXkgaGF2ZSBkb25lIHR3byB3YXJtdXBzXG4gIHtpZiAobnJvdyguKSA+IDIyKSBzbGljZSguLCAtKDE6MykpIGVsc2Ugc2xpY2UoLiwgLSgxOjIpKSB9ICU+JVxuICBtdXRhdGUocm93X251bSA9IHJvd19udW1iZXIoKSlcblxuICBwYXJ0aWNpcGFudF9kYXRhIDwtIGJpbmRfY29scyhcbiAgICAjIGF0dGVudGlvbiBjaGVjazogYWJvdXQgdGhlIGV4cGxpY2l0IHJ1bGVcbiAgICBkYXRhICU+JVxuICAgICAgZmlsdGVyKHRyaWFsX3R5cGUgPT0gXCJzdXJ2ZXktdGV4dFwiKSAlPiVcbiAgICAgIHRyYW5zbXV0ZShwYXJ0aWNpcGFudF9pZCwgYXR0bl9jaGVjayA9IHNhcHBseShyZXNwb25zZSwgZnVuY3Rpb24oeCkgZnJvbUpTT04oeClbWzFdXSkpLFxuICAgIFxuICAgICMgbWFpbiBkdjogbmVnb3RpYXRpb24gdnMgZGlyZWN0IHJlcXVlc3QgXG4gICAgZGF0YSAlPiVcbiAgICAgIGZpbHRlcih0cmlhbF90eXBlID09IFwiS2lOX3Jlc3BvbnNlXCIsIHJvd19udW0gJWluJSBjKDMsIDgsIDEzLCAxOCkpICU+JVxuICAgICAgdHJhbnNtdXRlKGR2ID0gcmVzcG9uc2UpLFxuICAgICAgXG4gICAgXG4gICAgIyBhdHRlbnRpb24gY2hlY2s6IGFzayBzaXplXG4gICAgZGF0YSAlPiVcbiAgICAgIGZpbHRlcih0cmlhbF90eXBlID09IFwiS2lOX3Jlc3BvbnNlXCIsIHJvd19udW0gJWluJSBjKDIsIDcsIDEyLCAxNykpICU+JVxuICAgICAgdHJhbnNtdXRlKGFza19zaXplX2NoZWNrID0gcmVzcG9uc2UsIHNjZW5hcmlvLCBhc2tfc2l6ZSwgaW50ZXJhY3Rpb25faGlzdG9yeSksXG4gICAgXG4gICAgIyBsaWtlbGlob29kIG9mIHJlc3BvbnNlIHN1Y2Nlc3MgKDA6IGRlZmluaXRlbHksIDE6IG1heWJlLCAyOiBkZWZpbml0ZWx5IG5vdClcbiAgICBkYXRhICU+JVxuICAgICAgZmlsdGVyKHRyaWFsX3R5cGUgPT0gXCJodG1sLWJ1dHRvbi1yZXNwb25zZVwiKSAlPiVcbiAgICAgIG11dGF0ZShwYWlyID0gY2VpbGluZyhyb3dfbnVtYmVyKCkgLyAyKSkgJT4lXG4gICAgICBncm91cF9ieShwYWlyKSAlPiVcbiAgICAgIHN1bW1hcmlzZShcbiAgICAgICAgZGlyZWN0X2xpa2VsaWhvb2QgPSByZXNwb25zZVt3aGljaC5taW4obmNoYXIoc3RpbXVsdXMpKV0sXG4gICAgICAgIG5lZ290aWF0aW9uX2xpa2VsaWhvb2QgPSByZXNwb25zZVt3aGljaC5tYXgobmNoYXIoc3RpbXVsdXMpKV0sXG4gICAgICAgIGxpa2VsaWhvb2RfcV9vcmRlciA9IHdoaWNoLm1pbihuY2hhcihzdGltdWx1cykpXG4gICAgICApICU+JVxuICAgICAgdW5ncm91cCgpICU+JVxuICAgICAgc2VsZWN0KC1wYWlyKVxuICApXG4gIHJldHVybiAocGFydGljaXBhbnRfZGF0YSlcbn1cblxuYWdlIDwtIHJlYWQuY3N2KFwicGFydGljaXBhbnRfZGVtLmNzdlwiKVxuXG5hbGxfZGF0YSA8LSBsaXN0LmZpbGVzKFwiLi9kYXRhXCIsIHBhdHRlcm4gPSBcIiouY3N2XCIsIGZ1bGwubmFtZXMgPSBUUlVFKSAlPiVcbiAgbWFwX2RmcihwYXJ0aWNpcGFudF9kYXRhKSAlPiUgXG4gIGZpbHRlcihncmVwbChcIl5wXFxcXGR7M30kXCIsIHBhcnRpY2lwYW50X2lkKSkgJT4lXG4gIGxlZnRfam9pbihzZWxlY3QoYWdlLCBwYXJ0aWNpcGFudF9pZCwgYWdlLCBnZW5kZXIpLCBieSA9IFwicGFydGljaXBhbnRfaWRcIikgJT4lXG4gIG11dGF0ZShuZWdvdGlhdGluZ19yZXF1ZXN0ID0gYXMuaW50ZWdlcihzdGFydHNXaXRoKGR2LCBcIklmXCIpKSlcbmBgYCJ9 -->
+
+```r
+participant_data <- function(csv) {
+  data <- read.csv(csv) %>%
+  mutate(participant_id = fromJSON(.$response[2])[[1]]) %>%
+  filter(trial_type %in% c('KiN_response', 'survey-text', 'html-button-response')) %>%
+    
+    # some participants may have done two warmups
+  {if (nrow(.) > 22) slice(., -(1:3)) else slice(., -(1:2)) } %>%
+  mutate(row_num = row_number())
+
+  participant_data <- bind_cols(
+    # attention check: about the explicit rule
+    data %>%
+      filter(trial_type == \"survey-text\") %>%
+      transmute(participant_id, attn_check = sapply(response, function(x) fromJSON(x)[[1]])),
+    
+    # main dv: negotiation vs direct request 
+    data %>%
+      filter(trial_type == \"KiN_response\", row_num %in% c(3, 8, 13, 18)) %>%
+      transmute(dv = response),
+      
+    
+    # attention check: ask size
+    data %>%
+      filter(trial_type == \"KiN_response\", row_num %in% c(2, 7, 12, 17)) %>%
+      transmute(ask_size_check = response, scenario, ask_size, interaction_history),
+    
+    # likelihood of response success (0: definitely, 1: maybe, 2: definitely not)
+    data %>%
+      filter(trial_type == \"html-button-response\") %>%
+      mutate(pair = ceiling(row_number() / 2)) %>%
+      group_by(pair) %>%
+      summarise(
+        direct_likelihood = response[which.min(nchar(stimulus))],
+        negotiation_likelihood = response[which.max(nchar(stimulus))],
+        likelihood_q_order = which.min(nchar(stimulus))
+      ) %>%
+      ungroup() %>%
+      select(-pair)
+  )
+  return (participant_data)
+}
+
+age <- read.csv(\"participant_dem.csv\")
+
+all_data <- list.files(\"./data\", pattern = \"*.csv\", full.names = TRUE) %>%
+  map_dfr(participant_data) %>% 
+  filter(grepl(\"^p\\d{3}$\", participant_id)) %>%
+  left_join(select(age, participant_id, age, gender), by = \"participant_id\") %>%
+  mutate(negotiating_request = as.integer(startsWith(dv, \"If\")))
+```
+
+<!-- rnb-source-end -->
+"
+"0","```r
+participant_data <- function(csv) {
+  data <- read.csv(csv) %>%
+  mutate(participant_id = fromJSON(.$response[2])[[1]]) %>%
+  filter(trial_type %in% c('KiN_response', 'survey-text', 'html-button-response')) %>%
+    
+    # some participants may have done two warmups
+  {if (nrow(.) > 22) slice(., -(1:3)) else slice(., -(1:2)) } %>%
+  mutate(row_num = row_number())
+
+  participant_data <- bind_cols(
+    # attention check: about the explicit rule
+    data %>%
+      filter(trial_type == \"survey-text\") %>%
+      transmute(participant_id, attn_check = sapply(response, function(x) fromJSON(x)[[1]])),
+    
+    # main dv: negotiation vs direct request 
+    data %>%
+      filter(trial_type == \"KiN_response\", row_num %in% c(3, 8, 13, 18)) %>%
+      transmute(dv = response),
+      
+    
+    # attention check: ask size
+    data %>%
+      filter(trial_type == \"KiN_response\", row_num %in% c(2, 7, 12, 17)) %>%
+      transmute(ask_size_check = response, scenario, ask_size, interaction_history),
+    
+    # likelihood of response success (0: definitely, 1: maybe, 2: definitely not)
+    data %>%
+      filter(trial_type == \"html-button-response\") %>%
+      mutate(pair = ceiling(row_number() / 2)) %>%
+      group_by(pair) %>%
+      summarise(
+        direct_likelihood = response[which.min(nchar(stimulus))],
+        negotiation_likelihood = response[which.max(nchar(stimulus))],
+        likelihood_q_order = which.min(nchar(stimulus))
+      ) %>%
+      ungroup() %>%
+      select(-pair)
+  )
+  return (participant_data)
+}
+
+age <- read.csv(\"participant_dem.csv\")
+
+all_data <- list.files(\"./data\", pattern = \"*.csv\", full.names = TRUE) %>%
+  map_dfr(participant_data) %>% 
+  filter(grepl(\"^p\\d{3}$\", participant_id)) %>%
+  left_join(select(age, participant_id, age, gender), by = \"participant_id\") %>%
+  mutate(negotiating_request = as.integer(startsWith(dv, \"If\")))
+```"

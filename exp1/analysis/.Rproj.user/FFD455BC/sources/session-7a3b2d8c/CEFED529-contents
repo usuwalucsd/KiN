@@ -1,0 +1,304 @@
+# This script runs models and sanity checks
+# Experiment: SciApp3
+# 9.04.2025
+
+# input:		clean RData
+#
+# output:		model
+#
+#			
+### SCRIPT BEGIN ##########################################################
+
+# remove everything from environment
+rm(list = ls(all=TRUE))
+
+# load packages
+library(lme4)
+library(glmmTMB)
+library(car)
+library(ggplot2)
+library(sjPlot)
+library(sjlabelled)
+library(sjmisc)
+library(tidyverse)
+source("/Volumes/ubps-all$/Language_Acquisition/Staff/Wortschatz intern/Ricarda/XCat/Analysis_info_functions/functions_Roger/helpers.r")
+source("N:/Language_Acquisition/Staff/Wortschatz intern/Ricarda/XCat/Analysis_info_functions/functions_Roger/helpers.r")
+
+#####################################################################################  
+########################################## pedagogical sampling #####################
+#####################################################################################
+d_samp=read.csv("~/Desktop/Analyses/Ricarda/SciApp3/touchdata/sampling.csv",
+            header=T, sep=",")
+d_test=read.csv("~/Desktop/Analyses/Ricarda/SciApp3/touchdata/SciApp3_clean_d_final.csv",
+                header=T, sep=",")
+# equal number of kids in sampling and test data set?
+setdiff(unique(d_samp$ID), unique(d_test$ID)) #remove ID 23 in sampling data set
+nrow(d_samp)
+d_samp=subset(d_samp, ID!=23)
+nrow(d_samp)
+
+d_samp <- d_samp %>%
+  arrange(ID_image, block_number)
+
+xdemo_samp <-d_samp %>% 
+  group_by(choice) %>% 
+  summarise(
+    nchild=n_distinct(ID),
+    ntrials = n(),
+    Mage = round(mean(age), 2),
+    SDage = round(sd(age),2),
+    MinAge = min(age, na.rm = TRUE),
+    MaxAge = max(age, na.rm = TRUE),
+    nUniqueFemales = n_distinct(ID[s == "w"])
+  )
+
+d_samp$targetImage <- gsub("^[0-9]+ _ ", "", d_samp$ID_image)
+
+# subset only exp data (no familiarization phase)
+nrow(d_samp)
+d_samp=subset(d_samp, block_number!=1)
+nrow(d_samp)
+
+# Centering age
+d_samp$z.age=as.vector(scale(d_samp$age))
+
+
+# check whether an object was labelled prior to sampling phase
+d_samp$Learn=as.numeric(d_samp$Learn)
+d_samp$Sampling=as.numeric(d_samp$Sampling)
+d_samp$response <- ifelse(d_samp$Learn ==0 & d_samp$Sampling>0, 1, #exploratory
+                          ifelse(d_samp$Learn>0 & d_samp$Sampling>0, 0, NA)) #confirmatory
+# only keep trials were participants sampled
+nrow(d_samp)
+d_samp <- subset(d_samp, !is.na(response))
+nrow(d_samp)
+
+mean_samp <- d_samp %>%
+  group_by(ID,choice) %>%
+  summarise(mean_labeled = mean(response), .groups = 'drop')
+
+mean_samp$mean_labeled_perc <- mean_samp$mean_labeled*100
+
+# Step 2: Compute group summary (mean and SD per chooser)
+group_summary <- mean_samp %>%
+  group_by(choice) %>%
+  summarise(
+    mean_prop = mean(mean_labeled_perc),
+    sd_prop = sd(mean_labeled_perc),
+    .groups = "drop"
+  )
+
+# Step 3: Plot
+library(ggplot2)
+library(viridis)  # for colorblind-friendly palette
+
+ggplot(mean_samp, aes(x = choice, y = mean_labeled_perc, fill = choice)) +
+  # Violin plot
+  geom_violin(width = 0.5, alpha = 0.7, trim = FALSE, color = NA) +
+  
+  # Jittered individual points
+  geom_jitter(width = 0.1, shape = 21, fill = "white", color = "black", size = 2) +
+  
+  # Mean point
+  stat_summary(
+    fun = mean,
+    geom = "point",
+    shape = 23,
+    size = 5,
+    fill = "black",
+    color = "white"
+  ) +
+  
+  # Error bars (mean ± SD)
+  geom_errorbar(
+    data = group_summary,
+    aes(x = choice, ymin = mean_prop - sd_prop, ymax = mean_prop + sd_prop),
+    width = 0.1,
+    color = "black",
+    inherit.aes = FALSE
+  ) +
+  
+  # Y axis settings
+  ylim(0, 100) +
+  labs(
+    x = "",
+    y = "Proportion of \n unlabeled objects sampled (%)"
+  ) +
+  
+  # Better colors and labels
+  scale_x_discrete(labels = c("passive" = "Mother", "active" = "Child")) +
+  scale_fill_viridis_d(option = "C", begin = 0.2, end = 0.8) +
+  
+  # Clean theme
+  theme_classic(base_size = 24) +
+  theme(
+    legend.position = "none",
+    axis.title.y = element_text(margin = margin(r = 10)),
+    axis.text = element_text(color = "black")
+  )
+setwd("/Users/rix/Desktop/sciapp3/NM_RB")
+ggsave("plot_mean_samp.pdf", width = 8, height = 6)
+ggsave("plot_mean_samp.png", width = 8, height = 6, dpi = 300)
+
+#####################################################################################  
+########################################## Accuracy Models ##########################
+#####################################################################################
+d_test <- d_test %>%
+  arrange(ID, block_number)
+
+d_test_aggregated <- d_test %>%
+  group_by(ID, targetLabel) %>%
+  summarise(across(everything(), mean, na.rm = TRUE))
+xdemo_test <-d_test_aggregated %>% 
+  ungroup() %>% 
+  summarise(
+    nchild=n_distinct(ID),
+    ntrials = n(),
+    Mage = round(mean(age), 2),
+    SDage = round(sd(age),2),
+    MinAge = min(age, na.rm = TRUE),
+    MaxAge = max(age, na.rm = TRUE),
+    nUniqueFemales = n_distinct(ID[sex == "w"])
+  )
+d_test$response_M2 <- ifelse(d_test$match=="True", 1,
+                             ifelse(d_test$match=="False", 0, NA))
+
+# remove trials where children did not choose an object at test
+d_test <- subset(d_test, !is.na(response_M2))
+nrow(d_test)
+(1744/1832)*100 #4.80349% of data removed
+
+############################################
+# dropouts
+library(openxlsx)
+participant_sheet <- read.xlsx("/Volumes/ubps-all$/Language_Acquisition/HIWI/HIWIstudies/OLDstudiesHIWI/SciApp3 HIWI/SciApp3_Uebersichtstabelle.xlsx")
+sort(unique(participant_sheet$ID))
+participant_sheet$Testing <- gsub("dopout", "dropout", participant_sheet$Testing)
+sort(unique(participant_sheet$dropout_reason))
+summary_dropouts <- participant_sheet %>%
+  group_by(Testing, dropout_reason) %>%
+  summarize(count = n(), .groups = "drop_last") %>%
+  arrange(desc(count))  # Arrange in descending order of count
+sort(unique(summary_dropouts$Testing))
+
+# 14 technical issues
+# 3 fuzzy or did not want to participate
+# 2 siblings were sitting on lap
+# --> 19 dropouts + 46 exp = 65 kids tested
+(19/65)*100 #29.23 % dropouts
+############################################
+
+length(unique(d_test$ID))
+range(d_test$age)
+mean(d_test$age)
+sd(d_test$age) 
+length(unique(d_test$ID[d_test$sex=="w"]))#20
+length(unique(d_test$ID[d_test$sex=="m"]))#26
+
+
+# subset only learning data (no familiarization)
+sort(unique(d_test$block_number))
+nrow(d_test)
+d_test=subset(d_test, block_number!=1)
+nrow(d_test)
+
+d_test$condition <- ifelse(grepl("both", d_test$naming_phase), 1,
+                           ifelse(grepl("learn", d_test$naming_phase), 0, NA))
+
+
+#### pedagogical influence on learning ####
+
+d_test$condition_samp <- ifelse(grepl("both", d_test$naming_phase), 1,
+                           ifelse(grepl("samp", d_test$naming_phase), 0, NA))
+
+d_test$condition_samp <- as.factor(d_test$condition_samp)
+
+d_test <- subset(d_test, !is.na(d_test$choice))
+d_test <- subset(d_test, !is.na(d_test$condition_samp))
+
+mean_test <- d_test %>%
+  group_by(ID,choice, condition_samp) %>%
+  summarise(mean_acc = mean(response_M2), .groups = 'drop')
+
+mean_test$mean_acc_perc <- mean_test$mean_acc*100
+
+# Step 2: Compute group summary (mean and SD per chooser)
+mean_test$condition <- ifelse(mean_test$condition_samp==1, "both phases", "sampling phase only")
+
+test_summary <- mean_test %>%
+  group_by(choice, condition) %>%
+  summarise(
+    mean_prop = mean(mean_acc_perc),
+    sd_prop = sd(mean_acc_perc),
+    .groups = "drop"
+  )
+# Step 3: Plot
+library(ggplot2)
+library(viridis)
+
+ggplot(mean_test, aes(x = choice, y = mean_acc_perc, fill = choice)) +
+  # Violin plot
+  geom_violin(width = 0.5, alpha = 0.5, trim = FALSE) +
+  
+  # Jittered points
+  geom_jitter(width = 0.1, shape = 21, fill = "black", color = "white", size = 2) +
+  
+  # Mean points
+  stat_summary(
+    fun = mean,
+    geom = "point",
+    shape = 23,
+    size = 6,
+    fill = "black",
+    color = "grey"
+  ) +
+  
+  # Error bars with bounds
+  geom_errorbar(
+    data = test_summary,
+    aes(
+      x = choice,
+      ymin = pmax(mean_prop - sd_prop, 0),
+      ymax = pmin(mean_prop + sd_prop, 100)
+    ),
+    width = 0.1,
+    color = "black",
+    inherit.aes = FALSE
+  ) +
+  
+  # Horizontal reference line at y = 25
+  geom_hline(yintercept = 25, linetype = "dashed", color = "black", size = 1) +
+  
+  # Facet by condition
+  facet_grid(~ condition) +
+  scale_fill_viridis_d(option = "C", begin = 0.2, end = 0.8) +
+  
+  # Custom labels and scale
+  scale_x_discrete(labels = c("passive" = "Mother", "active" = "Child")) +
+  #scale_fill_manual(values = c("passive" = "white", "active" = "grey")) +
+  
+  # Labels
+  labs(
+    x = "Choice",
+    y = "Proportion of \n accurate responses (%)"
+  ) +
+  
+  # Theme and styling
+  theme_classic(base_size = 24) +
+  theme(
+    legend.position = "none",
+    legend.title = element_blank()
+  ) +
+  
+  # Axis limits
+  ylim(0, 100)
+
+# Save the plot
+ggsave("plot_mean_accuracy_perc.pdf", width = 10, height = 6)
+ggsave("plot_mean_accuracy_perc.png", width = 10, height = 6, dpi = 300)
+
+save.image("/Users/rix/Desktop/sciapp3/NM_RB/touchdata_plots.RData")
+
+####################################
+######### end of script ############
+####################################

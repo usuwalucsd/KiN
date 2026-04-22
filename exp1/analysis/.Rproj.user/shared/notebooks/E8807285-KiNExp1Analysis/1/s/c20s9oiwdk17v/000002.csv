@@ -1,0 +1,213 @@
+"1","
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYWxsX2RhdGEgPC0gYWxsX2RhdGEgJT4lXG4gIG11dGF0ZShcbiAgICBhZ2UgPSBhcy5udW1lcmljKGFnZSksXG4gICAgYWdlX2MgPSBzY2FsZShhZ2UpWywxXVxuICApXG5cbiMgbW9kZWwgZmFpbHMgdG8gY29udmVyZ2VcbmFnZV9lZmZlY3RzX21vZGVsIDwtIGdsbWVyKFxuICBuZWdvdGlhdGluZ19yZXF1ZXN0IH4gYWdlX2MgKiBtYWduaXR1ZGVfYyArIGFnZV9jICogaW50ZXJhY3Rpb25faGlzdG9yeV9jICtcbiAgICAoMSArIG1hZ25pdHVkZV9jICsgaW50ZXJhY3Rpb25faGlzdG9yeV9jIHwgcGFydGljaXBhbnRfaWQpLFxuICBkYXRhID0gYWxsX2RhdGEsXG4gIGZhbWlseSA9IGJpbm9taWFsXG4pXG5cbnN1bW1hcnkoYWdlX2VmZmVjdHNfbW9kZWwpXG5gYGAifQ== -->
+
+```r
+all_data <- all_data %>%
+  mutate(
+    age = as.numeric(age),
+    age_c = scale(age)[,1]
+  )
+
+# model fails to converge
+age_effects_model <- glmer(
+  negotiating_request ~ age_c * magnitude_c + age_c * interaction_history_c +
+    (1 + magnitude_c + interaction_history_c | participant_id),
+  data = all_data,
+  family = binomial
+)
+
+summary(age_effects_model)
+```
+
+<!-- rnb-source-end -->
+"
+"0","```r
+all_data <- all_data %>%
+  mutate(
+    age = as.numeric(age),
+    age_c = scale(age)[,1]
+  )
+
+# model fails to converge
+age_effects_model <- glmer(
+  negotiating_request ~ age_c * magnitude_c + age_c * interaction_history_c +
+    (1 + magnitude_c + interaction_history_c | participant_id),
+  data = all_data,
+  family = binomial
+)
+
+summary(age_effects_model)
+```"
+"1","Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) ['glmerMod']
+ Family: binomial  ( logit )
+Formula: negotiating_request ~ age_c * magnitude_c + age_c * interaction_history_c +  
+    (1 + magnitude_c + interaction_history_c | participant_id)
+   Data: all_data
+
+      AIC       BIC    logLik -2*log(L)  df.resid 
+    215.6     253.4     -95.8     191.6       160 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-2.0232 -0.4377  0.1167  0.5156  1.4683 
+
+Random effects:
+ Groups         Name                  Variance Std.Dev. Corr        
+ participant_id (Intercept)            8.30591 2.882                
+                magnitude_c           10.15254 3.186    -1.00       
+                interaction_history_c  0.01639 0.128     0.93 -0.93 
+Number of obs: 172, groups:  participant_id, 43
+
+Fixed effects:
+                            Estimate Std. Error z value Pr(>|z|)  
+(Intercept)                  1.21354    0.60500   2.006   0.0449 *
+age_c                        0.37606    0.52895   0.711   0.4771  
+magnitude_c                 -1.27748    0.94404  -1.353   0.1760  
+interaction_history_c        0.57879    0.47250   1.225   0.2206  
+age_c:magnitude_c           -0.06647    0.72821  -0.091   0.9273  
+age_c:interaction_history_c  0.05613    0.42836   0.131   0.8958  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Correlation of Fixed Effects:
+            (Intr) age_c  mgntd_ intr__ ag_c:_
+age_c        0.076                            
+magnitude_c -0.829 -0.102                     
+intrctn_hs_  0.109 -0.001 -0.041              
+ag_c:mgntd_ -0.119 -0.790  0.176  0.022       
+ag_c:ntrc__  0.005  0.063  0.020  0.040 -0.024
+optimizer (Nelder_Mead) convergence code: 0 (OK)
+Model failed to converge with max|grad| = 0.05354 (tol = 0.002, component 1)
+  See ?lme4::convergence and ?lme4::troubleshooting.
+"
+"1","
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBhZ2UgZWZmZWN0IG1vZGVsIHdpdGhvdXQgaW50ZXJhY3Rpb25faGlzdG9yeSBzbG9wZVxuYWdlX2VmZmVjdHNfbW9kZWwyIDwtIGdsbWVyKFxuICBuZWdvdGlhdGluZ19yZXF1ZXN0IH4gYWdlX2MgKiBtYWduaXR1ZGVfYyArIGFnZV9jICogaW50ZXJhY3Rpb25faGlzdG9yeV9jICtcbiAgICAoMSArIG1hZ25pdHVkZV9jIHwgcGFydGljaXBhbnRfaWQpLFxuICBkYXRhID0gYWxsX2RhdGEsXG4gIGZhbWlseSA9IGJpbm9taWFsXG4pXG5cbnN1bW1hcnkoYWdlX2VmZmVjdHNfbW9kZWwyKVxuYGBgIn0= -->
+
+```r
+# age effect model without interaction_history slope
+age_effects_model2 <- glmer(
+  negotiating_request ~ age_c * magnitude_c + age_c * interaction_history_c +
+    (1 + magnitude_c | participant_id),
+  data = all_data,
+  family = binomial
+)
+
+summary(age_effects_model2)
+```
+
+<!-- rnb-source-end -->
+"
+"0","```r
+# age effect model without interaction_history slope
+age_effects_model2 <- glmer(
+  negotiating_request ~ age_c * magnitude_c + age_c * interaction_history_c +
+    (1 + magnitude_c | participant_id),
+  data = all_data,
+  family = binomial
+)
+
+summary(age_effects_model2)
+```"
+"1","Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) ['glmerMod']
+ Family: binomial  ( logit )
+Formula: negotiating_request ~ age_c * magnitude_c + age_c * interaction_history_c +      (1 + magnitude_c | participant_id)
+   Data: all_data
+
+      AIC       BIC    logLik -2*log(L)  df.resid 
+    209.7     238.0     -95.8     191.7       163 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-2.0105 -0.4327  0.1107  0.5303  1.4836 
+
+Random effects:
+ Groups         Name        Variance Std.Dev. Corr  
+ participant_id (Intercept)  8.458   2.908          
+                magnitude_c 10.624   3.259    -1.00 
+Number of obs: 172, groups:  participant_id, 43
+
+Fixed effects:
+                            Estimate Std. Error z value Pr(>|z|)  
+(Intercept)                   1.2179     0.5326   2.287   0.0222 *
+age_c                         0.3855     0.5249   0.735   0.4626  
+magnitude_c                  -1.3020     0.7551  -1.724   0.0846 .
+interaction_history_c         0.5517     0.4099   1.346   0.1784  
+age_c:magnitude_c            -0.0847     0.7318  -0.116   0.9078  
+age_c:interaction_history_c   0.0451     0.3964   0.114   0.9094  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Correlation of Fixed Effects:
+            (Intr) age_c  mgntd_ intr__ ag_c:_
+age_c       -0.025                            
+magnitude_c -0.819  0.045                     
+intrctn_hs_  0.025  0.012 -0.008              
+ag_c:mgntd_  0.045 -0.815 -0.063  0.003       
+ag_c:ntrc__  0.011  0.031  0.003 -0.035 -0.012
+optimizer (Nelder_Mead) convergence code: 0 (OK)
+boundary (singular) fit: see help('isSingular')
+"
+"1","
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBhZ2UgZWZmZWN0IG1vZGVsIHdpdGhvdXQgbWFnbml0dWRlX2Mgc2xvcGVcbmFnZV9lZmZlY3RzX21vZGVsMyA8LSBnbG1lcihcbiAgbmVnb3RpYXRpbmdfcmVxdWVzdCB+IGFnZV9jICogbWFnbml0dWRlX2MgKyBhZ2VfYyAqIGludGVyYWN0aW9uX2hpc3RvcnlfYyArXG4gICAgKDEgfCBwYXJ0aWNpcGFudF9pZCksXG4gIGRhdGEgPSBhbGxfZGF0YSxcbiAgZmFtaWx5ID0gYmlub21pYWxcbilcblxuc3VtbWFyeShhZ2VfZWZmZWN0c19tb2RlbDMpXG5gYGAifQ== -->
+
+```r
+# age effect model without magnitude_c slope
+age_effects_model3 <- glmer(
+  negotiating_request ~ age_c * magnitude_c + age_c * interaction_history_c +
+    (1 | participant_id),
+  data = all_data,
+  family = binomial
+)
+
+summary(age_effects_model3)
+```
+
+<!-- rnb-source-end -->
+"
+"0","```r
+# age effect model without magnitude_c slope
+age_effects_model3 <- glmer(
+  negotiating_request ~ age_c * magnitude_c + age_c * interaction_history_c +
+    (1 | participant_id),
+  data = all_data,
+  family = binomial
+)
+
+summary(age_effects_model3)
+```"
+"1","Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) ['glmerMod']
+ Family: binomial  ( logit )
+Formula: negotiating_request ~ age_c * magnitude_c + age_c * interaction_history_c +      (1 | participant_id)
+   Data: all_data
+
+      AIC       BIC    logLik -2*log(L)  df.resid 
+    211.2     233.3     -98.6     197.2       165 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-2.0206 -0.5060  0.3096  0.4812  1.6886 
+
+Random effects:
+ Groups         Name        Variance Std.Dev.
+ participant_id (Intercept) 3.665    1.914   
+Number of obs: 172, groups:  participant_id, 43
+
+Fixed effects:
+                            Estimate Std. Error z value Pr(>|z|)  
+(Intercept)                  0.84559    0.37979   2.226    0.026 *
+age_c                        0.31794    0.36587   0.869    0.385  
+magnitude_c                 -0.33422    0.41055  -0.814    0.416  
+interaction_history_c        0.49733    0.41243   1.206    0.228  
+age_c:magnitude_c            0.17983    0.40080   0.449    0.654  
+age_c:interaction_history_c  0.04319    0.40067   0.108    0.914  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Correlation of Fixed Effects:
+            (Intr) age_c  mgntd_ intr__ ag_c:_
+age_c        0.012                            
+magnitude_c -0.034 -0.003                     
+intrctn_hs_  0.053  0.020 -0.022              
+ag_c:mgntd_  0.016 -0.011 -0.019  0.011       
+ag_c:ntrc__  0.008  0.027  0.006 -0.012 -0.011
+"
