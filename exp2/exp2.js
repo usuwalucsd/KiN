@@ -258,7 +258,7 @@ function startExperiment() {
             },
         ], 
 
-        timeline_variables: [full_design[0], full_design[1]], 
+        timeline_variables: full_design, 
 
         on_finish: function(trial){
             trial.scenario = jsPsych.timelineVariable('scenario');
