@@ -2,8 +2,10 @@
 function startExperiment() {
     var jsPsych = initJsPsych({
         on_finish: function() {
-            // var filename = trial.response['Q0'] + ".csv"
-            jsPsych.data.get().localSave('csv',"whatever.csv");
+        console.log(jsPsych.data.get().values().map(t => t.trial_type));
+            var participant_ID = jsPsych.data.get().values()[0].participant_ID;
+            var filename = participant_ID + ".csv";
+            jsPsych.data.get().localSave('csv', filename);
             jsPsych.data.displayData();
         }
     });
@@ -15,9 +17,10 @@ function startExperiment() {
         type: jsPsychInitializeMicrophone
     }
 
-    // var preload = {
-
-    // }
+    var preload = {
+        type: jsPsychPreload,
+        auto_preload: true
+    }
     
     var participant_id = {
         type: jsPsychSurveyText,
@@ -25,7 +28,6 @@ function startExperiment() {
         return [{ prompt: `Participant ID<br>Condition number: ${condition_number}` }];
         },
         on_finish: function(trial) {
-        //   participant_code = trial.response["Q0"];
         jsPsych.data.addProperties({participant_ID: trial.response['Q0']});
         }
     };
@@ -214,9 +216,11 @@ function startExperiment() {
                     var scenario = jsPsych.timelineVariable('scenario'); 
                     return `<img src='stim/more-stim/${scenario}_agent1.png'>`
                 },
-                recording_duration: null, 
+                recording_duration: 60000, 
                 save_audio_url: true,
             },
+
+            
 
             // interaction: agent 2
             {
@@ -249,13 +253,12 @@ function startExperiment() {
                     var scenario = jsPsych.timelineVariable('scenario'); 
                     return `<img src='stim/more-stim/${scenario}_agent2.png'>`
                 },
-                recording_duration: null, 
+                recording_duration: 60000, 
                 save_audio_url: true,
             },
         ], 
 
-        // timeline_variables: jsPsych.randomization.repeat(full_design, 1)
-        timeline_variables: full_design, 
+        timeline_variables: [full_design[0], full_design[1]], 
 
         on_finish: function(trial){
             trial.scenario = jsPsych.timelineVariable('scenario');
@@ -267,7 +270,40 @@ function startExperiment() {
 
     var unsuccessful_outcome = {
         timeline: [
-            // show failed outcome and prompt again
+            // // agent 1: show failed outcome and prompt again
+            // {
+            //     type: jsPsychInstructions, 
+            //     show_clickable_nav: true, 
+            //     allow_keys: true, 
+            //     pages: function() {
+            //         console.log( jsPsych.timelineVariable('askOrder')); 
+            //         var askOrder = jsPsych.timelineVariable('askOrder');
+            //         var scenario = jsPsych.timelineVariable('scenario');
+                    
+            //         var pages = [
+            //             `<img/src='stim/${scenario}/${scenario}_parent_deny_agent1.png' style='max-width:100%'>`,
+            //             `<img/src='stim/${scenario}/${scenario}_${askOrder}_A.png' style='max-width:100%'>`
+
+            //         ]; 
+            //         return pages;
+            //     }
+
+            // }, 
+
+            // // audio recorder!! 
+            // {
+            //     type: jsPsychHtmlAudioResponse,
+
+            //     stimulus: function(){
+            //         var scenario = jsPsych.timelineVariable('scenario'); 
+            //         return `<img src='stim/more-stim/${scenario}_agent1.png'>`
+            //     },
+            //     recording_duration: 60000, 
+            //     save_audio_url: true,
+            // },
+
+
+             // agent 2: show failed outcome and prompt again
             {
                 type: jsPsychInstructions, 
                 show_clickable_nav: true, 
@@ -278,7 +314,7 @@ function startExperiment() {
                     var scenario = jsPsych.timelineVariable('scenario');
                     
                     var pages = [
-                        `<img/src='stim/${scenario}/${scenario}_parent_deny_agent1.png' style='max-width:100%'>`,
+                        `<img/src='stim/${scenario}/${scenario}_parent_deny_agent2.png' style='max-width:100%'>`,
                         `<img/src='stim/${scenario}/${scenario}_${askOrder}_B.png' style='max-width:100%'>`
 
                     ]; 
@@ -293,20 +329,38 @@ function startExperiment() {
 
                 stimulus: function(){
                     var scenario = jsPsych.timelineVariable('scenario'); 
-                    return `<img src='stim/more-stim/${scenario}_agent1.png'>`
+                    return `<img src='stim/more-stim/${scenario}_agent2.png'>`
                 },
-                recording_duration: null, 
+                recording_duration: 60000, 
                 save_audio_url: true,
             },
         ], 
         timeline_variables: [full_design.at(-1)]
     }
 
+    // to-do: add osf saving but make sure to filter data so that it doesnt have any audio ones
+    // make sure to turn data collection on also on datapipe 
+    
+    const subject_id = jsPsych.randomization.randomID(10);
+    const filename = `${subject_id}.csv`;
+
+    const save_data = {
+        type: jsPsychPipe,
+        action: "save",
+        experiment_id: "FFfqn93YYZdr",
+        filename: filename,
+        // to-do: filter out the data to remove audio responses before saving to osf
+        data_string: ()=>jsPsych.data.get().csv()
+
+    };
+
+    timeline.push(preload); 
     timeline.push(init_mic); 
     timeline.push(participant_id);
     timeline.push(introduction); 
     timeline.push(procedure);
     timeline.push(unsuccessful_outcome); 
+    // timeline.push(save_data); 
 
 
     jsPsych.run(timeline);
