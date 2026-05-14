@@ -256,6 +256,20 @@ function startExperiment() {
                 recording_duration: 60000, 
                 save_audio_url: true,
             },
+
+            // thank you 
+            {
+                type: jsPsychInstructions,
+                show_clickable_nav: true, 
+                allow_keys: true, 
+                pages: function() {
+                    var scenario = jsPsych.timelineVariable('scenario');
+
+                    var pages = [`<img src='stim/more-stim/${scenario}_thankyou.png' style='max-width:100%'>`]; 
+                    return pages; 
+                    
+                }
+            },
         ], 
 
         timeline_variables: full_design, 
@@ -316,7 +330,6 @@ function startExperiment() {
                     var pages = [
                         `<img/src='stim/${scenario}/${scenario}_parent_deny_agent2.png' style='max-width:100%'>`,
                         `<img/src='stim/${scenario}/${scenario}_${askOrder}_B.png' style='max-width:100%'>`
-
                     ]; 
                     return pages;
                 }
