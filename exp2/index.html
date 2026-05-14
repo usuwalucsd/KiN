@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="jspsych/dist/jspsych.js"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-instructions@1.1.4"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-fullscreen@1.2.1"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-survey-text@1.1.3"></script>
+    <script src="https://unpkg.com/@jspsych-contrib/plugin-pipe"></script>
+      <script src="https://unpkg.com/@jspsych/plugin-initialize-microphone@1.0.3"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-preload@1.1.3"></script>
+  <script src="jspsych/dist/plugin-html-audio-response.js"></script>
+  
+    <script src="https://unpkg.com/@jspsych/plugin-html-button-response@1.2.0"></script>
+    <script src="jspsych/dist/plugin-KiN-response.js"></script>
+    <link rel="stylesheet" href="jspsych/dist/jspsych.css">
+
+    <style>
+      #condition-screen {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-family: sans-serif;
+        z-index: 9999;
+      }
+    </style>
+  </head>
+
+  <title>KiN Experiment 2</title>
+
+  <body>
+    <div id="condition-screen">
+      <label style="font-size:18px; margin-bottom:10px;">Condition Number</label>
+      <input id="condition-input" type="number" min="1" max="24"
+        style="font-size:18px; padding:8px; width:100px; text-align:center; border:2px solid #ccc; border-radius:4px;">
+      <p id="condition-error" style="color:red; display:none;">Please enter a number between 1 and 24.</p>
+      <button id="condition-next"
+        style="margin-top:20px; font-size:16px; padding:10px 30px; cursor:pointer; color:#333; background-color:#fff; border-color: #333; border-radius:4px;">
+        Next
+      </button>
+    </div>
+
+    <script>
+      var scenarios = ['food', 'bedtime', 'activity', 'toy'];
+      var conditions = ['no_interaction', 'failed_interaction'];
+      var askOrders = ['smallbig', 'bigsmall'];
+
+      var scenarioCode = { food: 1, bedtime: 2, activity: 3, toy: 4 };
+      var conditionCode = { no_interaction: 1, failed_interaction: 2 };
+      var askOrderCode  = { smallbig: 1, bigsmall: 2 };
+
+      var slots = [];
+      conditions.forEach(function(condition) {
+          askOrders.forEach(function(askOrder) {
+              slots.push({ condition: condition, askOrder: askOrder });
+          });
+      });
+
+      function permutations(arr) {
+          if (arr.length <= 1) return [arr];
+          return arr.flatMap((item, i) =>
+              permutations([...arr.slice(0, i), ...arr.slice(i + 1)])
+              .map(rest => [item, ...rest])
+          );
+      }
+
+      var allCombinations = {};
+      permutations(scenarios).forEach(function(perm, idx) {
+          var condition_number = idx + 1;
+          allCombinations[condition_number] = perm.map(function(scenario, i) {
+              var slot = slots[i];
+              return {
+                  scenario: scenario,
+                  condition: slot.condition,
+                  askOrder: slot.askOrder,
+                  condition_number: condition_number,
+                  code: `${scenarioCode[scenario]}.${conditionCode[slot.condition]}.${askOrderCode[slot.askOrder]}`
+              };
+          });
+      });
+
+      document.getElementById("condition-next").addEventListener("click", function() {
+        console.log('click')
+        var val = Number(document.getElementById("condition-input").value);
+        if (!val || val < 1 || val > 24) {
+          document.getElementById("condition-error").style.display = "block";
+          return;
+        }
+        console.log(allCombinations)
+        condition_number = val;
+        // full_design = allCombinations[String(condition_number)];
+        full_design = allCombinations[condition_number];
+
+        console.log("condition_number:", condition_number);
+        console.log("full_design:", full_design);
+        document.getElementById("condition-screen").remove();
+        startExperiment();
+      });
+    </script>
+
+    <script src="exp2.js"></script>
+  </body>
+</html>
