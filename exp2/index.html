@@ -86,19 +86,15 @@
       });
 
       document.getElementById("condition-next").addEventListener("click", function() {
-        console.log('click')
         var val = Number(document.getElementById("condition-input").value);
         if (!val || val < 1 || val > 24) {
           document.getElementById("condition-error").style.display = "block";
           return;
         }
-        console.log(allCombinations)
         condition_number = val;
-        // full_design = allCombinations[String(condition_number)];
         full_design = allCombinations[condition_number];
-
-        console.log("condition_number:", condition_number);
-        console.log("full_design:", full_design);
+        // console.log("condition_number:", condition_number);
+        // console.log("full_design:", full_design);
         document.getElementById("condition-screen").remove();
         startExperiment();
       });
