@@ -215,9 +215,11 @@ function startExperiment() {
             pages: function() {
                 var askOrder = jsPsych.timelineVariable('askOrder');
                 var scenario = jsPsych.timelineVariable('scenario');
+                var ask = agent_num === "1"
+                    ? "A" : "C"; 
                 return [
                     `<img/src='stim/${scenario}/${scenario}_parent_outcome_agent${agent_num}.png' style='max-width:100%'>`,
-                    `<img/src='stim/${scenario}/${scenario}_${askOrder}_C.png' style='max-width:100%'>`
+                    `<img/src='stim/${scenario}/${scenario}_${askOrder}_${ask}.png' style='max-width:100%'>`
                 ];
             }
         };
