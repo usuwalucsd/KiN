@@ -20,7 +20,7 @@ var jsPsychHtmlAudioResponse = (function (jspsych) {
       /** The maximum length of the recording, in milliseconds. The default value is intentionally set low because of the potential to accidentally record very large data files if left too high. You can set this to `null` to allow the participant to control the length of the recording via the done button, but be careful with this option as it can lead to crashing the browser if the participant waits too long to stop the recording.  */
       recording_duration: {
         type: jspsych.ParameterType.INT,
-        default: 2e3
+        default: null
       },
       /** Whether to show a button on the screen that the participant can click to finish the recording. */
       show_done_button: {
@@ -118,6 +118,7 @@ var jsPsychHtmlAudioResponse = (function (jspsych) {
       const btn = display_element.querySelector("#finish-trial");
       if (btn) {
         btn.addEventListener("click", () => {
+            console.log("button clicked at:", performance.now());
           const end_time = performance.now();
           this.rt = Math.round(end_time - this.stimulus_start_time);
           this.stopRecording().then(() => {
@@ -137,6 +138,9 @@ var jsPsychHtmlAudioResponse = (function (jspsych) {
         }
       };
       this.stop_event_handler = () => {
+        console.log("stop fired at:", performance.now());
+        console.log("number of chunks:", this.recorded_data_chunks.length);
+  console.log("chunk sizes:", this.recorded_data_chunks.map(c => c.size));
         const data = new Blob(this.recorded_data_chunks, { type: this.recorded_data_chunks[0].type });
         this.audio_url = URL.createObjectURL(data);
         const reader = new FileReader();
@@ -152,6 +156,11 @@ var jsPsychHtmlAudioResponse = (function (jspsych) {
         this.recorder_start_time = e.timeStamp;
         this.showDisplay(display_element, trial);
         this.addButtonEvent(display_element, trial);
+
+        console.log("recording_duration value:", trial.recording_duration); // add this
+        console.log("recording_duration is null:", trial.recording_duration === null); // add this
+    
+
         if (trial.stimulus_duration !== null) {
           this.jsPsych.pluginAPI.setTimeout(() => {
             this.hideStimulus(display_element);
@@ -176,12 +185,15 @@ var jsPsychHtmlAudioResponse = (function (jspsych) {
       this.recorder.addEventListener("start", this.start_event_handler);
     }
     startRecording() {
+        console.log("recorder state before start:", this.recorder.state);
+
       this.recorder.start();
     }
     stopRecording() {
-      this.recorder.stop();
+      // this.recorder.stop();
       return new Promise((resolve) => {
         this.load_resolver = resolve;
+        this.recorder.stop(); // modified
       });
     }
     showPlaybackControls(display_element, trial) {
