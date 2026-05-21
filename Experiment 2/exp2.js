@@ -1,23 +1,11 @@
 function startExperiment() {
-    // var jsPsych = initJsPsych({
-    //     on_finish: function() {
-    //         // console.log(jsPsych.data.get().values().map(t => t.trial_type));
-    //         var participant_ID = jsPsych.data.get().values()[0].participant_ID;
-    //         var filename = participant_ID + ".json";
-    //         saveData(jsPsych.data.get().json()); // ← add this
-
-    //         jsPsych.data.get().localSave('json', filename);
-
-    //         // jsPsych.data.displayData();
-    //     }
-    // });
 
     var jsPsych = initJsPsych({
         on_finish: function() {
             var participant_ID = jsPsych.data.get().values()[0].participant_ID;
             var filename = participant_ID + ".json";
             jsPsych.data.get().localSave('json', filename);
-            saveData(filename, jsPsych.data.get().json()); // one argument, no name
+            saveData(filename, jsPsych.data.get().json());
         }
     });
 
@@ -64,9 +52,9 @@ function startExperiment() {
             - ask_size_contrast: shows what agent 1 and 2 want 
             - agent 1 ask size (a lot vs a little)
             - agent 2 ask size (a lot vs a little)
-            - agent 1: interaction (failed/none)
+            - agent 1: reminder of ask size, interaction (failed/none)
             - audio response for agent 1 
-            - agent 2: interaction (failed/none)
+            - agent 2: reminder of ask size, interaction (failed/none)
             - audio response for agent 2
 
             conditional timeline (only for the last trial)
@@ -182,8 +170,15 @@ function startExperiment() {
                 var ask_agent = agent_num === "1"
                     ? (askOrder === 'smallbig' ? 'small' : 'big')
                     : (askOrder === 'smallbig' ? 'big' : 'small');
+                var ask_size_slide = agent_num == 1 ? 'A' : 'C';
+                
 
-                var pages = [`<img/src='stim/${scenario}/${scenario}_nointeraction_agent${agent_num}.png' style='max-width:100%'>`];
+                var pages = [
+                    `<img/src='stim/${scenario}/${scenario}_${askOrder}_${ask_size_slide}.png' style='max-width:100%'>`, // ask size reminder for the participants
+                    `<img/src='stim/${scenario}/${scenario}_nointeraction_agent${agent_num}.png' style='max-width:100%'>`
+                ];
+
+                // var pages = [`<img/src='stim/${scenario}/${scenario}_nointeraction_agent${agent_num}.png' style='max-width:100%'>`];
 
                 if (condition == 'failed_interaction') {
                     pages.push(`<img/src='stim/${scenario}/${scenario}_parent_agent${agent_num}.png' style='max-width:100%'>`);
@@ -271,6 +266,10 @@ function startExperiment() {
             trial.condition = jsPsych.timelineVariable('condition');
             trial.code = jsPsych.timelineVariable('code');
             trial.askOrder = jsPsych.timelineVariable('askOrder');
+            var participant_ID = jsPsych.data.get().values()[0].participant_ID;
+            var filename = participant_ID + "_" + trial.scenario + "_" + trial.condition + "_" + trial.askOrder + ".json";
+            saveData(filename, jsPsych.data.get().json());
+
         }
     };
 
