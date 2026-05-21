@@ -17,7 +17,7 @@ function startExperiment() {
             var participant_ID = jsPsych.data.get().values()[0].participant_ID;
             var filename = participant_ID + ".json";
             jsPsych.data.get().localSave('json', filename);
-            saveData(jsPsych.data.get().json()); // one argument, no name
+            saveData(filename, jsPsych.data.get().json()); // one argument, no name
         }
     });
 
@@ -241,26 +241,26 @@ function startExperiment() {
     var procedure = {
         timeline: [
             start_intro,
-            // attention_check,
-            // ask_size_contrast,
-            // ask_size_question("1"),
-            // ask_size_question("2"),
-            // interaction("1"), 
-            // recording("1"), 
-            // {
-            //     timeline: [unsuccessful_outcome("1"), recording("1")],
-            //     conditional_function: function() {
-            //         return jsPsych.timelineVariable('scenario') === full_design.at(-1).scenario;
-            //     }
-            // },
-            // interaction("2"),
-            // recording("2"),
-            // {
-            //     timeline: [unsuccessful_outcome("2"), recording("2")],
-            //     conditional_function: function() {
-            //         return jsPsych.timelineVariable('scenario') === full_design.at(-1).scenario;
-            //     }
-            // },
+            attention_check,
+            ask_size_contrast,
+            ask_size_question("1"),
+            ask_size_question("2"),
+            interaction("1"), 
+            recording("1"), 
+            {
+                timeline: [unsuccessful_outcome("1"), recording("1")],
+                conditional_function: function() {
+                    return jsPsych.timelineVariable('scenario') === full_design.at(-1).scenario;
+                }
+            },
+            interaction("2"),
+            recording("2"),
+            {
+                timeline: [unsuccessful_outcome("2"), recording("2")],
+                conditional_function: function() {
+                    return jsPsych.timelineVariable('scenario') === full_design.at(-1).scenario;
+                }
+            },
             thankyou, 
         ],
 
@@ -298,7 +298,7 @@ function startExperiment() {
     //     initJsPsych({
     //     on_finish: function(){ saveData(jsPsych.data.get().json()); }
     // });
-    function saveData(data){
+    function saveData(filename, data){
         var xhr = new XMLHttpRequest();
         xhr.open('POST', 'write_data.php');
         xhr.setRequestHeader('Content-Type', 'application/json');
@@ -311,8 +311,9 @@ function startExperiment() {
                 console.error('❌ Server error:', xhr.status, xhr.responseText);
             }
         };
+        xhr.send(JSON.stringify({ filename: filename, filedata: data })); // ← include filename in payload
 
-        xhr.send(JSON.stringify({filedata: data}));
+        // xhr.send(JSON.stringify({filedata: data}));
     }
 
  
