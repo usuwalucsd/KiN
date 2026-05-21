@@ -1,0 +1,27 @@
+{
+    "id": "ED56DE36",
+    "path": "~/Desktop/KiN/exp1/analysis/KiNExp1Analysis.Rmd",
+    "project_path": "KiNExp1Analysis.Rmd",
+    "type": "r_markdown",
+    "hash": "2389083179",
+    "contents": "",
+    "dirty": false,
+    "created": 1776365648021.0,
+    "source_on_save": false,
+    "relative_order": 6,
+    "properties": {
+        "chunk_output_type": "inline",
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "415,0",
+        "scrollLine": "400"
+    },
+    "folds": "421|31|461|0|\n462|26|503|0|\n",
+    "lastKnownWriteTime": 1776976535,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1776976535958,
+    "read_only": false,
+    "read_only_alternatives": []
+}

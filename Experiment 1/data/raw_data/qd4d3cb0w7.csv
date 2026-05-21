@@ -1,0 +1,76 @@
+"success","timeout","failed_images","failed_audio","failed_video","trial_type","trial_index","time_elapsed","internal_node_id","rt","response","view_history","scenario","ask_size","interaction_history","buttons","button_pressed","correct","stimulus"
+"true","false","[]","[]","[]","preload","0","298","0.0-0.0","","","","","","","","","",""
+"","","","","","survey-text","1","4635","0.0-1.0","4330","{""Q0"":""p100""}","","","","","","","",""
+"","","","","","instructions","2","18209","0.0-2.0","13573","","[{""page_index"":0,""viewing_time"":13573}]","","","","","","",""
+"","","","","","instructions","3","29247","0.0-3.0-0.0","11037","","[{""page_index"":0,""viewing_time"":3890},{""page_index"":1,""viewing_time"":2869},{""page_index"":2,""viewing_time"":4278}]","","","","","","",""
+"","","","","","KiN_response","4","38836","0.0-3.0-1.0","","Can I get crayons?","","warmup","","","[""Can I get crayons?"",""Can I get a teddy bear?""]","left","true",""
+"","","","","","instructions","5","45340","0.0-3.0-2.0","6503","","[{""page_index"":0,""viewing_time"":4719},{""page_index"":1,""viewing_time"":1783}]","","","","","","",""
+"","","","","","instructions","6","50344","0.0-5.0","5002","","[{""page_index"":0,""viewing_time"":5001}]","","","","","","",""
+"","","","","","instructions","7","56910","0.0-6.0-0.0","6561","","[{""page_index"":0,""viewing_time"":6561}]","","","","","","",""
+"","","","","","instructions","8","78325","0.0-6.0-1.0","21411","","[{""page_index"":0,""viewing_time"":8662},{""page_index"":1,""viewing_time"":2515},{""page_index"":2,""viewing_time"":2888},{""page_index"":3,""viewing_time"":3251},{""page_index"":4,""viewing_time"":4095}]","","","","","","",""
+"","","","","","survey-text","9","84573","0.0-6.0-2.0","6234","{""Q0"":""2""}","","","","","","","",""
+"","","","","","instructions","10","90141","0.0-6.0-3.0","5567","","[{""page_index"":0,""viewing_time"":5567}]","","","","","","",""
+"","","","","","KiN_response","11","100519","0.0-6.0-4.0","","alot","","activity","big","failed","[""alittle"",""alot""]","right","",""
+"","","","","","instructions","12","119976","0.0-6.0-5.0","19456","","[{""page_index"":0,""viewing_time"":3879},{""page_index"":1,""viewing_time"":2176},{""page_index"":2,""viewing_time"":3820},{""page_index"":3,""viewing_time"":4345},{""page_index"":4,""viewing_time"":5236}]","","","","","","",""
+"","","","","","KiN_response","13","132996","0.0-6.0-6.0","","If I clean my room, can I play five more rounds of games?","","activity","big","failed","[""Can I play five more rounds of games?"",""If I clean my room, can I play five more rounds of games?""]","right","",""
+"","","","","","html-button-response","14","146901","0.0-6.0-7.0","13903","0","","","","","","","","
+          <span style=""font-size: 2vw; font-weight:bold;"">If I clean my room, can I play five more rounds of games?</span><br><br>
+          <img style = 'width: 10vw;' src=""stim/more-stim/activity-agent.png""> 
+            "
+"","","","","","instructions","15","148522","0.0-6.0-8.0","1620","","[{""page_index"":0,""viewing_time"":1620}]","","","","","","",""
+"","","","","","html-button-response","16","159059","0.0-6.0-9.0","10536","1","","","","","","","","
+          <span style=""font-size: 2vw; font-weight:bold;"">Can I play five more rounds of games?</span><br><br>
+          <img style = 'width: 10vw;' src=""stim/more-stim/activity-agent.png""> 
+        "
+"","","","","","instructions","17","161549","0.0-6.0-10.0","2489","","[{""page_index"":0,""viewing_time"":2489}]","","","","","","",""
+"","","","","","instructions","18","167111","0.0-6.0-0.1","5560","","[{""page_index"":0,""viewing_time"":5560}]","","","","","","",""
+"","","","","","instructions","19","186138","0.0-6.0-1.1","19026","","[{""page_index"":0,""viewing_time"":9380},{""page_index"":1,""viewing_time"":6162},{""page_index"":2,""viewing_time"":3484}]","","","","","","",""
+"","","","","","survey-text","20","192055","0.0-6.0-2.1","5905","{""Q0"":""6""}","","","","","","","",""
+"","","","","","instructions","21","199247","0.0-6.0-3.1","7192","","[{""page_index"":0,""viewing_time"":7192}]","","","","","","",""
+"","","","","","KiN_response","22","210176","0.0-6.0-4.1","","alot","","bedtime","big","none","[""alittle"",""alot""]","right","",""
+"","","","","","instructions","23","217774","0.0-6.0-5.1","7591","","[{""page_index"":0,""viewing_time"":2338},{""page_index"":1,""viewing_time"":5253}]","","","","","","",""
+"","","","","","KiN_response","24","231932","0.0-6.0-6.1","","Can I stay up for 1 more hour after bedtime?","","bedtime","big","none","[""Can I stay up for 1 more hour after bedtime?"",""If I wake up early tomorrow, can I stay up for 1 more hour after bedtime?""]","left","",""
+"","","","","","html-button-response","25","247381","0.0-6.0-7.1","15447","2","","","","","","","","
+          <span style=""font-size: 2vw; font-weight:bold;"">Can I stay up for 1 more hour after bedtime?</span><br><br>
+          <img style = 'width: 10vw;' src=""stim/more-stim/bedtime-agent.png""> 
+            "
+"","","","","","instructions","26","248783","0.0-6.0-8.1","1401","","[{""page_index"":0,""viewing_time"":1401}]","","","","","","",""
+"","","","","","html-button-response","27","264135","0.0-6.0-9.1","15351","1","","","","","","","","
+          <span style=""font-size: 2vw; font-weight:bold;"">If I wake up early tomorrow, can I stay up for 1 more hour after bedtime?</span><br><br>
+          <img style = 'width: 10vw;' src=""stim/more-stim/bedtime-agent.png""> 
+        "
+"","","","","","instructions","28","268671","0.0-6.0-10.1","4535","","[{""page_index"":0,""viewing_time"":4535}]","","","","","","",""
+"","","","","","instructions","29","273823","0.0-6.0-0.2","5151","","[{""page_index"":0,""viewing_time"":5151}]","","","","","","",""
+"","","","","","instructions","30","293232","0.0-6.0-1.2","19409","","[{""page_index"":0,""viewing_time"":7431},{""page_index"":1,""viewing_time"":3116},{""page_index"":2,""viewing_time"":2618},{""page_index"":3,""viewing_time"":3022},{""page_index"":4,""viewing_time"":3222}]","","","","","","",""
+"","","","","","survey-text","31","299346","0.0-6.0-2.2","6103","{""Q0"":""3""}","","","","","","","",""
+"","","","","","instructions","32","304184","0.0-6.0-3.2","4838","","[{""page_index"":0,""viewing_time"":4837}]","","","","","","",""
+"","","","","","KiN_response","33","312528","0.0-6.0-4.2","","alittle","","food","small","failed","[""alot"",""alittle""]","right","",""
+"","","","","","instructions","34","333450","0.0-6.0-5.2","20923","","[{""page_index"":0,""viewing_time"":5522},{""page_index"":1,""viewing_time"":2794},{""page_index"":2,""viewing_time"":3309},{""page_index"":3,""viewing_time"":4578},{""page_index"":4,""viewing_time"":4719}]","","","","","","",""
+"","","","","","KiN_response","35","345364","0.0-6.0-6.2","","Can I have one more candy?","","food","small","failed","[""Can I have one more candy?"",""If I brush my teeth, can I have one more candy?""]","left","",""
+"","","","","","html-button-response","36","362897","0.0-6.0-7.2","17530","1","","","","","","","","
+          <span style=""font-size: 2vw; font-weight:bold;"">If I brush my teeth, can I have one more candy?</span><br><br>
+          <img style = 'width: 10vw;' src=""stim/more-stim/food-agent.png""> 
+            "
+"","","","","","instructions","37","363985","0.0-6.0-8.2","1088","","[{""page_index"":0,""viewing_time"":1088}]","","","","","","",""
+"","","","","","html-button-response","38","380062","0.0-6.0-9.2","16074","1","","","","","","","","
+          <span style=""font-size: 2vw; font-weight:bold;"">Can I have one more candy?</span><br><br>
+          <img style = 'width: 10vw;' src=""stim/more-stim/food-agent.png""> 
+        "
+"","","","","","instructions","39","382419","0.0-6.0-10.2","2356","","[{""page_index"":0,""viewing_time"":2356}]","","","","","","",""
+"","","","","","instructions","40","385470","0.0-6.0-0.3","3050","","[{""page_index"":0,""viewing_time"":3050}]","","","","","","",""
+"","","","","","instructions","41","396306","0.0-6.0-1.3","10836","","[{""page_index"":0,""viewing_time"":6363},{""page_index"":1,""viewing_time"":2685},{""page_index"":2,""viewing_time"":1788}]","","","","","","",""
+"","","","","","survey-text","42","402756","0.0-6.0-2.3","6440","{""Q0"":""1""}","","","","","","","",""
+"","","","","","instructions","43","407560","0.0-6.0-3.3","4803","","[{""page_index"":0,""viewing_time"":4802}]","","","","","","",""
+"","","","","","KiN_response","44","416482","0.0-6.0-4.3","","alittle","","toy","small","none","[""alot"",""alittle""]","right","",""
+"","","","","","instructions","45","425838","0.0-6.0-5.3","9356","","[{""page_index"":0,""viewing_time"":4794},{""page_index"":1,""viewing_time"":4562}]","","","","","","",""
+"","","","","","KiN_response","46","435973","0.0-6.0-6.3","","If I share my toys, can I get one more toy?","","toy","small","none","[""If I share my toys, can I get one more toy?"",""Can I get one more toy?""]","left","",""
+"","","","","","html-button-response","47","446116","0.0-6.0-7.3","10141","1","","","","","","","","
+          <span style=""font-size: 2vw; font-weight:bold;"">If I share my toys, can I get one more toy?</span><br><br>
+          <img style = 'width: 10vw;' src=""stim/more-stim/toy-agent.png""> 
+            "
+"","","","","","instructions","48","447332","0.0-6.0-8.3","1216","","[{""page_index"":0,""viewing_time"":1215}]","","","","","","",""
+"","","","","","html-button-response","49","457980","0.0-6.0-9.3","10647","2","","","","","","","","
+          <span style=""font-size: 2vw; font-weight:bold;"">Can I get one more toy?</span><br><br>
+          <img style = 'width: 10vw;' src=""stim/more-stim/toy-agent.png""> 
+        "
+"","","","","","instructions","50","459613","0.0-6.0-10.3","1632","","[{""page_index"":0,""viewing_time"":1632}]","","","","","","",""

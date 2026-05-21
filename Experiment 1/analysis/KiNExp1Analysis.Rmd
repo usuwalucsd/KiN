@@ -1,0 +1,682 @@
+---
+title: "KiN Experiment 1 Analysis"
+output: html_notebook
+---
+
+## 1. Load libraries and download data from OSF
+
+Load libraries 
+```{r load libraries}
+for (package in c("tidyverse", "dplyr", "jsonlite", "lme4", "here", "glue", "utils")) {
+  suppressWarnings(
+    suppressPackageStartupMessages(
+      library(package, character.only = TRUE)
+      )
+    )
+}
+```
+
+Download data from OSF 
+```{r download data from osf}
+get_raw_data <- function(osf_address) {
+
+  print(glue("\nDownloading data\n"))
+
+  zip_path <- here("Experiment 1", "data", "raw_data.zip")
+
+  glue::glue("https://files.osf.io/v1/resources/{osf_address}/providers/osfstorage/?zip=") %>%
+    curl::curl_download(zip_path, quiet = FALSE)
+
+  utils::unzip(
+    zip_path,
+    overwrite = TRUE,
+    exdir = fs::path_ext_remove(zip_path)
+  )
+
+  file.remove(zip_path)
+}
+
+#specify OSF path
+osf_path <- "uj3tw"
+file_name <- "Exp1_data"
+data_directory <- here("Experiment 1", "data")
+raw_data_directory <- here("Experiment 1", "data", "raw_data")
+processed_data_directory <- here("Experiment 1", "data", "processed_data")
+
+
+
+# create data folder if it does not yet exist
+if (!dir.exists(data_directory)) {
+  dir.create(data_directory, recursive = TRUE)
+} else {
+  print("Data Directory already exists!")
+}
+
+# as long as there isn't already an existing folder download the raw data
+if (!dir.exists(raw_data_directory)) {
+  get_raw_data(osf_path)
+} else {
+  print("Raw Data Directory already exists!")
+}
+
+# as long as there isn't already an existing folder create a processed data folder
+if (!dir.exists(processed_data_directory)) {
+  dir.create(processed_data_directory, recursive = TRUE) 
+} else {
+  print("Processed Data Directory already exists!")
+}
+```
+
+
+## 2. Data Processing
+
+Data cleaning 
+```{r data processing} 
+
+# warmup, scenario, conditions, responses, attention check questions  
+participant_data <- function(csv) {
+  data <- read.csv(csv) %>%
+  mutate(participant_id = fromJSON(.$response[2])[[1]]) %>%
+  filter(trial_type %in% c('KiN_response', 'survey-text', 'html-button-response')) %>%
+  # some participants may have done two warmups
+  {if (nrow(.) > 22) slice(., -(1:3)) else slice(., -(1:2)) } %>%
+  mutate(row_num = row_number())
+
+  participant_data <- bind_cols(
+    # attention check: about the explicit rule
+    data %>%
+      filter(trial_type == "survey-text") %>%
+      transmute(participant_id, attn_check = sapply(response, function(x) fromJSON(x)[[1]])),
+    
+    # main dv: negotiation vs direct request 
+    data %>%
+      filter(trial_type == "KiN_response", row_num %in% c(3, 8, 13, 18)) %>%
+      transmute(dv = response),
+      
+    
+    # attention check: ask size
+    data %>%
+      filter(trial_type == "KiN_response", row_num %in% c(2, 7, 12, 17)) %>%
+      transmute(ask_size_check = response, scenario, ask_size, interaction_history),
+
+    # likelihood of response success (0: definitely yes, 1: maybe, 2: definitely not)
+    data %>%
+      filter(trial_type == "html-button-response") %>%
+      mutate(pair = ceiling(row_number() / 2)) %>%
+      group_by(pair) %>%
+      summarise(
+        direct_likelihood = response[which.min(nchar(stimulus))], # direct requests are shorter
+        negotiation_likelihood = response[which.max(nchar(stimulus))], # negotiating requests are longer
+        likelihood_q_order = which.min(nchar(stimulus)) # 1 if direct first, 2 if negotiating first
+      ) %>%
+      ungroup() %>%
+      select(-pair)
+    
+  )
+  return (participant_data)
+}
+```
+
+Adding demographics
+```{r adding demographics to processed data}
+age <- read.csv("KiN_demographics.csv")
+raw_data_directory <- here("Experiment 1", "data","raw_data")
+processed_data_directory <- here("Experiment 1","data","processed_data")
+
+
+all_data <- list.files(raw_data_directory, pattern = "*.csv", full.names = TRUE) %>%
+  map_dfr(participant_data) %>% 
+  filter(grepl("^p\\d{3}$", participant_id)) %>%
+  left_join(age, all_data, by = "participant_id") %>%
+  mutate(negotiating_request = as.integer(startsWith(dv, "If"))) %>%
+
+  # exclude children younger than 3 and older than 8
+  filter(age_day_of >= 4 & age_day_of <= 9)
+
+# likelihood values are unintuitive (0: definitely, 1: maybe, 2: definitely yes)
+# flipping so that its (0: definitely not, 1: maybe, 2: definitely yes)
+all_data <- all_data %>%
+      mutate(
+        direct_likelihood = as.numeric(direct_likelihood),
+    negotiation_likelihood = as.numeric(negotiation_likelihood),
+        direct_likelihood = ifelse(direct_likelihood == 0, 2, ifelse(direct_likelihood == 2, 0, direct_likelihood)),
+        negotiation_likelihood = ifelse(negotiation_likelihood == 0, 2, ifelse(negotiation_likelihood == 2, 0, negotiation_likelihood))
+      )
+
+write.csv(all_data, paste0(processed_data_directory, "/", "Exp1_processed_data.csv"))
+```
+
+Exclusion criteria 
+```{r exclusion criteria}
+
+warmup <- function(csv){
+  data <- read.csv(csv) %>%
+  mutate(participant_id = fromJSON(.$response[2])[[1]]) %>%
+  filter(scenario == 'warmup')
+  
+  return (data)
+}
+
+exclusion <- list.files(raw_data_directory, pattern = "*.csv", full.names = TRUE) %>%
+  map_dfr(warmup) %>% 
+  filter(grepl("^p\\d{3}$", participant_id)) %>% 
+  group_by(participant_id) %>%
+  summarise(all_incorrect = all(correct == 'false'), .groups = "drop") %>%
+  filter(all_incorrect) %>%
+  pull(participant_id)
+
+exclusion
+
+# no participants excluded per exclusion criteria
+```
+
+## 3. Pre-registered Analyses 
+
+```{r load data for analyses}
+processed_data_directory <- here("..","data","processed_data")
+all_data <- read.csv(paste0(processed_data_directory, "/", "Exp1_processed_data.csv"))
+```
+
+Main pre-registered analyses 
+```{r main pre-registered analysis}
+all_data <- all_data %>%
+  mutate(
+    magnitude_c = ifelse(ask_size == "small", -0.5, 0.5),
+    interaction_history_c = ifelse(interaction_history == "none", -0.5, 0.5)
+  )
+
+# model fails to converge
+model <- glmer(
+  negotiating_request ~ magnitude_c + interaction_history_c + 
+    (1 + magnitude_c + interaction_history_c | participant_id),
+  data = all_data,
+  family = binomial
+)
+
+summary(model)
+
+# model (without slopes for interaction_history)
+model2 <- glmer(
+  negotiating_request ~ magnitude_c + interaction_history_c + 
+    (1 + magnitude_c  | participant_id),
+  data = all_data,
+  family = binomial
+)
+
+summary(model2)
+
+# model (without slopes for magnitude_c)
+model3 <- glmer(
+  negotiating_request ~ magnitude_c + interaction_history_c + 
+    (1 | participant_id),
+  data = all_data,
+  family = binomial
+)
+
+summary(model3)
+```
+
+Secondary Analyses 
+```{r secondary analyses}
+all_data <- all_data %>%
+  mutate(
+    age_day_of = as.numeric(age_day_of),
+    age_c = scale(age_day_of)[,1]
+  )
+
+# model fails to converge
+age_effects_model <- glmer(
+  negotiating_request ~ age_c * magnitude_c + age_c * interaction_history_c +
+    (1 + magnitude_c + interaction_history_c | participant_id),
+  data = all_data,
+  family = binomial
+)
+
+summary(age_effects_model)
+
+# age effect model without interaction_history slope
+age_effects_model2 <- glmer(
+  negotiating_request ~ age_c * magnitude_c + age_c * interaction_history_c +
+    (1 + magnitude_c | participant_id),
+  data = all_data,
+  family = binomial
+)
+
+summary(age_effects_model2)
+
+# age effect model without magnitude_c slope
+age_effects_model3 <- glmer(
+  negotiating_request ~ age_c * magnitude_c + age_c * interaction_history_c +
+    (1 | participant_id),
+  data = all_data,
+  family = binomial
+)
+
+summary(age_effects_model3)
+
+```
+
+
+
+## 4. Figures
+
+Load data 
+```{r load data for figures}
+processed_data_directory <- here("Experiment 1","data","processed_data")
+all_data <- read.csv(paste0(processed_data_directory, "/", "Exp1_processed_data.csv"))
+
+# just so that the condition orders make sense in the figure (small --> big; none --> failed)
+all_data <- all_data %>%
+  mutate(
+    ask_size = factor(ask_size, levels = c("small", "big")),
+    interaction_history = factor(interaction_history, levels = c("none", "failed"))
+  )
+```
+
+Overall Averages
+```{r}
+# overall proportion of negotiating 
+print("overall proportion of negotiating")
+mean(all_data$negotiating_request, na.rm = TRUE)
+
+# proportion of negotiation across scenarios 
+ggplot(all_data, aes(x = scenario,
+                     y = negotiating_request)) + 
+  stat_summary(fun = mean, geom = "bar", position = position_dodge()) +
+  stat_summary(fun.data = mean_cl_normal, geom = "errorbar", position= position_dodge(width=1),  width = 0.2, alpha=0.4) +
+    stat_summary(fun = mean, geom = "text", position = position_dodge(width = 1), aes(label = round(after_stat(y), 2)), vjust = -1) +
+  labs(
+    title = "Proportion Negotiating Across Scenarios", 
+    x = "Scenario", y = "Proportion Negotiating") +
+  theme_light()
+
+# proportion of negotiations across scenarios: ask_size x interaction_history
+ggplot(all_data, aes(x = ask_size,
+                     y = negotiating_request,
+                     fill = interaction_history)) + 
+  stat_summary(fun = mean, geom = "bar", position = position_dodge()) +
+  stat_summary(fun.data = mean_cl_normal, geom = "errorbar", position= position_dodge(width=1),  width = 0.2, alpha=0.4) +
+  facet_wrap(~ scenario) +
+  scale_fill_manual(values = c("failed" = "#89B3F0","none" = "#F0D87F"))+
+  labs(
+    title = "Proportion Negotiating Across Scenarios and Conditions", 
+    x = "Ask Size", y = "Proportion Negotiating",fill = "Interaction History") +
+  theme_light()
+
+# proportion of negotiations across scenarios x ask_size x interaction_history
+ggplot(all_data, aes(x = ask_size,
+                     y = negotiating_request,
+                     fill = interaction_history)) + 
+  stat_summary(fun = mean, geom = "bar", position = position_dodge()) +
+  stat_summary(fun.data = mean_cl_normal, geom = "errorbar", position= position_dodge(width=1),  width = 0.2, alpha=0.4) +
+  stat_summary(fun = mean, geom = "text", position = position_dodge(width = 1), aes(label = round(after_stat(y), 2)), vjust = -1) +
+  # geom_hline(yintercept = mean(all_data$negotiating_request), color = "darkgrey", linetype = "dashed")+
+  scale_fill_manual(values = c("failed" = "#89B3F0","none" = "#F0D87F"))+
+  ylim(0,1) +
+  labs(
+    title = "Proportion Negotiating Across Conditons (n=50)", 
+    x = "Ask Size", y = "Proportion Negotiating",fill = "Interaction History") +
+  theme_light()
+
+
+# age continous 
+ggplot(all_data, aes(x=age_day_of, y=negotiating_request)) + 
+    geom_smooth() +
+  # geom_jitter() +
+  labs(
+    title = "Age Effects on Negotiating", 
+    x= "Age (in years)", y="Proportion Negotiating"
+  )+ 
+  theme_light()
+
+```
+Effect of ask_size
+```{r effect of ask size}
+# proportion of negotiations across two manipulations of ask_size (small vs big)
+ggplot(all_data, aes(x = ask_size,
+                     y = negotiating_request)) + 
+  stat_summary(fun = mean, geom = "bar", position = position_dodge()) +
+    stat_summary(fun.data = mean_cl_normal, geom = "errorbar", position= position_dodge(width=1),  width = 0.2, alpha=0.4) +
+  stat_summary(fun = mean, geom = "text", position = position_dodge(width = 1), aes(label = round(after_stat(y), 2)), vjust = -1) +
+  ylim(0,1) +
+  labs(
+    title = "Proportion Negotiating across Magnitude of Ask (Small ask vs Big Ask)", 
+    x = "Ask Size", y = "Proportion Negotiating") +
+  theme_light()
+
+
+# proportion of negotiations across ask_size and scenarios 
+ggplot(all_data, aes(x = scenario,
+                     y = negotiating_request,
+                     fill = ask_size)) + 
+  stat_summary(fun = mean, geom = "bar", position = position_dodge()) +
+  stat_summary(fun.data = mean_cl_normal, geom = "errorbar", position= position_dodge(width=1),  width = 0.2, alpha=0.4) +
+  scale_fill_manual(values = c("small" = "#EBAEC8","big" = "#9FEB73"))+
+  labs(
+    title = "Proportion Negotiating Across Scenarios and Conditions", 
+    x = "Scenario", y = "Proportion Negotiating",fill = "Ask Size") +
+  theme_light()
+
+# ask size x age
+age_summary_asksize <- all_data %>% 
+  group_by(participant_id, age_day_of, ask_size) %>% 
+  summarize(prop_negotiating = mean(negotiating_request), .groups="drop") 
+age_summary_asksize$age_day_of <- as.numeric(as.character(age_summary_asksize$age_day_of))
+
+# proportion of negotiation across ask_size and age 
+ggplot(age_summary_asksize, aes(x = age_day_of, y = prop_negotiating, color = ask_size)) + 
+  # ylim(0.25,1.25)+
+  geom_smooth() +
+  scale_color_manual(values = c("small" = "#E055A5","big" = "#9FEB73")) +
+  labs(
+    title = "Age and Ask Size Effects on Negotiating", 
+    x = "Age (in years)", 
+    y = "Proportion Negotiating"
+  ) + 
+  theme_light()
+
+```
+Effect of interaction_history
+```{r effect of interaction history}
+
+# proportion of negotiations across two manipulations of interaction_history (none vs failed)
+ggplot(all_data, aes(x = interaction_history,
+                     y = negotiating_request)) + 
+  stat_summary(fun = mean, geom = "bar", position = position_dodge()) +
+    stat_summary(fun.data = mean_cl_normal, geom = "errorbar", position= position_dodge(width=1),  width = 0.2, alpha=0.4) +
+  stat_summary(fun = mean, geom = "text", position = position_dodge(width = 1), aes(label = round(after_stat(y), 2)), vjust = -1) +
+  ylim(0,1) +
+  labs(
+    title = "Proportion Negotiating across Interaction History (none vs failed)",
+    x = "Interaction History", y = "Proportion Negotiating") +
+  theme_light()
+
+# proportion of negotiation across interaction history and scenario 
+ggplot(all_data, aes(x = scenario,
+                     y = negotiating_request,
+                     fill = interaction_history)) + 
+  stat_summary(fun = mean, geom = "bar", position = position_dodge()) +
+  stat_summary(fun.data = mean_cl_normal, geom = "errorbar", position= position_dodge(width=1),  width = 0.2, alpha=0.4) +
+  scale_fill_manual(values = c("failed" = "#89B3F0","none" = "#F0D87F"))+
+  labs(
+    title = "Proportion Negotiating Across Scenarios and Interaction History", 
+    x = "Scenario", y = "Proportion Negotiating",fill = "Interaction History") +
+  theme_light()
+
+# ask size x interaction_history
+age_summary_interactionhistory <- all_data %>% 
+  group_by(participant_id, age_day_of, interaction_history) %>% 
+  summarize(prop_negotiating = mean(negotiating_request), .groups="drop") 
+age_summary_interactionhistory$age_day_of <- as.numeric(as.character(age_summary_interactionhistory$age_day_of))
+
+
+# proportion of negotiation across interaction_history and age 
+ggplot(age_summary_interactionhistory, aes(x = age_day_of, y = prop_negotiating, color = interaction_history)) + 
+  # ylim(0.25,1.25)+
+  geom_smooth() +
+  scale_color_manual(values = c("failed" = "#89B3F0","none" = "#F0D87F")) +
+  labs(
+    title = "Age and Interactio History Effects on Negotiating", 
+    x = "Age (in years)", 
+    y = "Proportion Negotiating"
+  ) + 
+  theme_light()
+
+
+```
+
+
+Do children negotiate consistently?
+```{r}
+# do children negotiate consistently 
+consistency_data <- all_data %>%
+  group_by(participant_id) %>%
+  summarise(
+    n_scenarios       = n(),                          # how many scenarios they saw (always 4)
+    n_negotiated      = sum(negotiating_request),     # how many times they said yes (0–4)
+    prop_negotiated   = mean(negotiating_request),    # proportion of yes responses (0–1)
+    consistent        = n_negotiated == n_scenarios | n_negotiated == 0,  # TRUE if all-yes or all-no
+       age_day_of       = first(age_day_of),             # add this line
+
+     consistency_type  = case_when(
+      n_negotiated == n_scenarios ~ "Always negotiated",  # said yes all 4 times
+      n_negotiated == 0           ~ "Never negotiated",   # said no all 4 times
+      TRUE                        ~ "Mixed"               # anything in between
+    )
+  )
+
+consistency_summary <- consistency_data %>%
+  count(consistency_type) %>%       # how many children fall into each category
+  mutate(prop = n / sum(n))         # what proportion of the sample that is
+
+print (consistency_summary)
+
+```
+
+Experimenter effects
+```{r experimenter effects?}
+ # Experimenter effects?
+ggplot(all_data, aes(x = experimenter, y = negotiating_request)) +
+  stat_summary(fun=mean, geom='bar', position = position_dodge()) +
+  # geom_bar(stat = "identity", position = "dodge") +
+  labs(title= "Experimeter Effects on Proportion of Negotiating Requests",
+       y = "Proportion of Negotiating Requests", x = "Experimenter") + 
+  theme_light()
+
+
+ggplot(all_data, aes(x = experimenter, y = negotiating_request, fill=ask_size)) +
+  stat_summary(fun=mean, geom='bar', position = position_dodge()) +
+  scale_fill_manual(values = c("small" = "#EBAEC8","big" = "#9FEB73"))+
+  # geom_bar(stat = "identity", position = "dodge") +
+  labs(title= "Experimeter and Ask Size Effects on Proportion of Negotiating Requests",
+       y = "Proportion of Negotiating Requests", x = "Experimenter") + 
+  theme_light()
+
+ggplot(all_data, aes(x = experimenter, y = negotiating_request, fill=interaction_history)) +
+  stat_summary(fun=mean, geom='bar', position = position_dodge()) +
+  scale_fill_manual(values = c("failed" = "#89B3F0","none" = "#F0D87F"))+
+  # geom_bar(stat = "identity", position = "dodge") +
+  labs(title= "Experimeter and Interaction History Effects on Proportion of Negotiating Requests",
+       y = "Proportion of Negotiating Requests", x = "Experimenter") + 
+  theme_light()
+```
+
+Attention Check (ask size)
+```{r}
+# checking if attention check for ask size was correct 
+all_data <- all_data %>% 
+  mutate(
+    ask_size_check_correct = if_else(
+      (ask_size == "small" & ask_size_check == "alittle") |
+      (ask_size == "big"   & ask_size_check == "alot"),
+      1, 0
+    )
+  )
+
+
+# % of correct attention check
+cat("% of correct attention check responses")
+print(mean(all_data$ask_size_check_correct))
+
+# % of correct attention check by ask size and scenario 
+cat("Attention Check Accuracy by Ask Size and Scenario\n")
+attn_check_summary <- all_data %>% 
+  group_by(ask_size, scenario) %>% 
+  summarize(accuracy = mean(ask_size_check_correct), .groups="drop")
+
+print(attn_check_summary)
+
+
+cat("% of correct attention check by ask size\n")
+print(all_data %>% group_by(ask_size) %>% summarize(accuracy = mean(ask_size_check_correct), .groups="drop"))
+
+cat("% of correct attention check by scenario\n")
+print(all_data %>% group_by(scenario) %>% summarize(accuracy = mean(ask_size_check_correct), .groups="drop"))
+
+# filtering out the observations with incorrect responses for attention check 
+attn_check_filtered_asksize <- all_data %>% 
+  filter(ask_size_check_correct == 1)
+
+# average for ask size manipulations when the attention check question was correct
+ggplot(attn_check_filtered_asksize, aes(x = ask_size,
+                     y = negotiating_request)) +
+  stat_summary(fun = mean, geom = "bar", position = position_dodge()) +
+    stat_summary(fun.data = mean_cl_normal, geom = "errorbar", position= position_dodge(width=1),  width = 0.2, alpha=0.4) +
+  stat_summary(fun = mean, geom = "text", position = position_dodge(width = 1), aes(label = round(after_stat(y), 2)), vjust = -1) +
+    geom_text(stat = "count", aes(label = paste0("n=", after_stat(count))), y = 0.05) +
+
+  ylim(0,1) +
+  labs(
+    title = "Proportion Negotiating across Magnitude of Ask (Small ask vs Big Ask)",
+    x = "Ask Size", y = "Proportion Negotiating") +
+  theme_light()
+
+# only observations that had correct attention check response 
+
+ggplot(attn_check_filtered_asksize, aes(x = scenario, y = negotiating_request, fill = ask_size)) +
+  stat_summary(fun = mean, geom = "bar", position = position_dodge()) +
+    stat_summary(fun.data = mean_cl_normal, geom = "errorbar", position= position_dodge(width=1),  width = 0.2, alpha=0.4) +
+  stat_summary(fun = mean, geom = "text", position = position_dodge(width = 1), aes(label = round(after_stat(y), 2)), vjust = -1) +
+  
+  scale_fill_manual(values = c("small" = "#EBAEC8","big" = "#9FEB73")) +
+  labs(
+    title = "Proportion Negotiating Across Scenarios and Conditions",
+    x = "Scenario",
+    y = "Proportion Negotiating",
+    fill = "Ask Size"
+  ) +
+  theme_light()
+
+
+
+```
+
+Likelihood of success judgement
+```{r likelihood}
+
+# do children think that negotiations are more likely to yield a successful outcome? 
+cat("likelihood of success for direct requests: ")
+print(mean(all_data$direct_likelihood))
+
+cat("\nlikelihood of success for negotiating requests: ")
+print(mean(all_data$negotiation_likelihood))
+
+
+# difference in likelihood of success judgement (direct vs negotiating) --> ask size
+plot_likelihood <- function(x_var) {
+  all_data %>%
+    pivot_longer(cols = c(direct_likelihood, negotiation_likelihood),
+                 names_to = "likelihood_type",
+                 values_to = "likelihood") %>%
+    mutate(likelihood_type = recode(likelihood_type,
+                                    "direct_likelihood" = "Direct",
+                                    "negotiation_likelihood" = "Negotiating")) %>%
+    group_by(across(all_of(x_var)), likelihood_type) %>%
+    summarise(
+      mean = mean(likelihood, na.rm = TRUE),
+      ci   = qt(0.975, df = n() - 1) * sd(likelihood, na.rm = TRUE) / sqrt(n()),
+      .groups = "drop"
+    ) %>%
+    ggplot(aes(x = .data[[x_var]], y = mean, color = likelihood_type)) +
+    geom_point(size = 3, position = position_dodge(width = 0.5)) +
+    geom_errorbar(aes(ymin = mean - ci, ymax = mean + ci),
+                  width = 0.15, position = position_dodge(width = 0.5)) +
+    ylim(0, 2)+
+    scale_color_manual(values = c("Direct" = "#89B3F0", "Negotiating" = "#FFBF39")) +
+    labs(
+      title = paste("Direct vs. Negotiation Likelihood by", x_var),
+      x = x_var, y = "Mean Likelihood", color = "Likelihood Type"
+    ) +
+    theme_light()
+}
+
+# usage
+plot_likelihood("ask_size")
+plot_likelihood("scenario")
+plot_likelihood("interaction_history")
+
+
+
+# do children think their own responses (direct vs negotiating) are going to be successful? 
+all_data <- all_data %>%
+  mutate(
+    choice = ifelse(negotiating_request == 0, "direct", "negotiating"),
+    choice_likelihood = ifelse(negotiating_request == 0, direct_likelihood, negotiation_likelihood)
+  )
+
+cat("Average likelihood of success for chosen request\n")
+print(mean(all_data$choice_likelihood))
+
+ggplot(all_data, aes(x = age_day_of, y = choice_likelihood, color = choice)) +
+  geom_smooth() +
+  scale_color_manual(values = c("direct" = "#89B3F0", "negotiating" = "#FFBF39")) +
+  labs(
+    title = "Likelihood of Success by Age and Choice Type",
+    x = "Age (in years)",
+    y = "Likelihood of Success",
+    color = "Choice"
+  ) +
+  theme_light()
+
+ggplot(all_data, aes(x = ask_size, y = choice_likelihood, color = choice)) +
+  geom_point(position = position_dodge(width = 0.5), alpha = 0.3) +
+  stat_summary(fun = mean, geom = "point", size = 3, position = position_dodge(width = 0.5)) +
+  stat_summary(fun.data = mean_cl_normal, geom = "errorbar", width = 0.2, position = position_dodge(width = 0.5)) +
+  facet_wrap(~ scenario) +
+  scale_color_manual(values = c("direct" = "#89B3F0", "negotiating" = "#FFBF39")) +
+  labs(
+    title = "Likelihood of Success by Ask Size, Choice, and Scenario",
+    x = "Ask Size",
+    y = "Likelihood of Success",
+    color = "Choice"
+  ) +
+  theme_light()
+
+all_data %>%
+  # mutate(request_type = if_else(negotiating_request == 0, "Direct", "Negotiating")) %>%
+  group_by(age_day_of) %>%
+  summarise(mean = mean(choice_likelihood, na.rm = TRUE),
+            ci = qt(0.975, df = n() - 1) * sd(choice_likelihood, na.rm = TRUE) / sqrt(n()),
+            .groups = "drop") %>%
+  ggplot(aes(x = age_day_of, y = mean)) +
+  geom_smooth(aes(y = mean))+
+  labs(y = "Mean Choice Likelihood", x = "Age", fill = "Request Type") +
+  theme_light()
+
+
+all_data %>%
+  mutate(
+    request_type = if_else(negotiating_request == 0, "Direct", "Negotiating"),
+    likelihood_label = factor(choice_likelihood,
+                              levels = c(0, 1, 2),
+                              labels = c("Unlikely", "Neutral", "Likely"))
+  ) %>%
+  count(request_type, likelihood_label) %>%
+  group_by(request_type) %>%
+  mutate(prop = n / sum(n)) %>%
+  ggplot(aes(x = request_type, y = prop, fill = likelihood_label)) +
+  geom_col(width = 0.5) +
+  geom_text(aes(label = paste0("n=", n)),
+            position = position_stack(vjust = 0.5),
+            size = 3.5, color = "white", fontface = "bold") +
+  scale_fill_manual(values = c("Unlikely" = "#E07B7B", "Neutral" = "#D4D4D4", "Likely" = "#89B3F0")) +
+  scale_y_continuous(labels = scales::percent) +
+  labs(
+    title = "Perceived Likelihood of Success for Own Choice",
+    x = "Request Type", y = "Proportion", fill = "Likelihood"
+  ) +
+  theme_light()
+
+
+
+```
+
+```{r}
+# to-do: filter out only first trial and see if there are main effects of ask size and interaction history and all other stuff
+# note: it might be because of repetitions 
+```
+
+
+
+
+

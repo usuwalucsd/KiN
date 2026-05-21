@@ -1,0 +1,213 @@
+"","participant_id","attn_check","dv","ask_size_check","scenario","ask_size","interaction_history","direct_likelihood","negotiation_likelihood","likelihood_q_order","date","experimenter","age_day_of","negotiating_request"
+"1","p065","idk","Can I stay up for 10 more minutes after bedtime?","alot","bedtime","small","none",0,1,2,"3/25/26","AL",6.220396988,0
+"2","p065","3","If I brush my teeth, can I have ten more candies?","alot","food","big","failed",0,1,2,"3/25/26","AL",6.220396988,1
+"3","p065","2","If I clean my room, can I play one more round of game?","alittle","activity","small","failed",0,1,1,"3/25/26","AL",6.220396988,1
+"4","p065","1","If I share my toys, can I get five more toys?","alittle","toy","big","none",1,2,1,"3/25/26","AL",6.220396988,1
+"5","p074","1","If I share my toys, can I get five more toys?","alot","toy","big","failed",0,1,1,"4/9/26","US",4.366872005,1
+"6","p074","7","If I wake up early tomorrow, can I stay up for 1 more hour after bedtime?","alot","bedtime","big","none",0,0,2,"4/9/26","US",4.366872005,1
+"7","p074","1","If I brush my teeth, can I have one more candy?","alot","food","small","failed",0,0,1,"4/9/26","US",4.366872005,1
+"8","p074","2","If I clean my room, can I play one more round of game?","alittle","activity","small","none",0,0,2,"4/9/26","US",4.366872005,1
+"9","p076","3","Can I have one more candy?","alittle","food","small","failed",0,1,2,"4/9/26","US",5.560574949,0
+"10","p076","7:30","Can I stay up for 1 more hour after bedtime?","alot","bedtime","big","none",1,0,1,"4/9/26","US",5.560574949,0
+"11","p076","1","Can I get five more toys?","alittle","toy","big","failed",1,2,1,"4/9/26","US",5.560574949,0
+"12","p076","2","Can I play one more round of game?","alittle","activity","small","none",1,1,1,"4/9/26","US",5.560574949,0
+"13","p093","9","Can I stay up for 10 more minutes after bedtime?","alittle","bedtime","small","none",2,0,1,"4/16/26","AL",4.804928131,0
+"14","p093","1","If I share my toys, can I get five more toys?","alittle","toy","big","failed",2,0,1,"4/16/26","AL",4.804928131,1
+"15","p093","1","If I brush my teeth, can I have ten more candies?","alot","food","big","none",2,2,1,"4/16/26","AL",4.804928131,1
+"16","p093","2","If I clean my room, can I play one more round of game?","alot","activity","small","failed",2,2,2,"4/16/26","AL",4.804928131,1
+"17","p092","9pm","Can I stay up for 1 more hour after bedtime?","alot","bedtime","big","failed",2,2,2,"4/16/26","AL",4.495550992,0
+"18","p092","3","If I brush my teeth, can I have ten more candies?","alittle","food","big","none",2,2,1,"4/16/26","AL",4.495550992,1
+"19","p092","2","If I clean my room, can I play one more round of game?","alittle","activity","small","none",2,2,1,"4/16/26","AL",4.495550992,1
+"20","p092","1","If I share my toys, can I get one more toy?","alittle","toy","small","failed",1,2,1,"4/16/26","AL",4.495550992,1
+"21","p089","1","If I share my toys, can I get one more toy?","alittle","toy","small","failed",2,1,1,"4/14/26","CS",5.700205339,1
+"22","p089","i forget","If I wake up early tomorrow, can I stay up for 10 more minutes after bedtime?","alot","bedtime","small","none",1,1,2,"4/14/26","CS",5.700205339,1
+"23","p089","3","If I brush my teeth, can I have ten more candies?","alot","food","big","failed",0,1,2,"4/14/26","CS",5.700205339,1
+"24","p089","2","If I clean my room, can I play five more rounds of games?","alittle","activity","big","none",0,1,2,"4/14/26","CS",5.700205339,1
+"25","p063","9pm","If I wake up early tomorrow, can I stay up for 1 more hour after bedtime?","alot","bedtime","big","failed",1,1,1,"3/25/26","AL",7.296372348,1
+"26","p063","2","If I clean my room, can I play one more round of game?","alittle","activity","small","failed",1,2,1,"3/25/26","AL",7.296372348,1
+"27","p063","1","If I share my toys, can I get one more toy?","alittle","toy","small","none",1,2,1,"3/25/26","AL",7.296372348,1
+"28","p063","3","If I brush my teeth, can I have ten more candies?","alot","food","big","none",0,1,1,"3/25/26","AL",7.296372348,1
+"29","p079","9","Can I stay up for 1 more hour after bedtime?","alot","bedtime","big","failed",1,0,2,"4/9/26","US",7.575633128,0
+"30","p079","1","If I share my toys, can I get one more toy?","alot","toy","small","failed",0,1,1,"4/9/26","US",7.575633128,1
+"31","p079","3","If I brush my teeth, can I have one more candy?","alittle","food","small","none",0,1,1,"4/9/26","US",7.575633128,1
+"32","p079","2","If I clean my room, can I play five more rounds of games?","alot","activity","big","none",0,1,1,"4/9/26","US",7.575633128,1
+"33","p061","1","If I share my toys, can I get five more toys?","alot","toy","big","failed",0,1,2,"3/25/26","US",7.550992471,1
+"34","p061","3","If I brush my teeth, can I have one more candy?","alot","food","small","failed",0,0,1,"3/25/26","US",7.550992471,1
+"35","p061","9","Can I stay up for 10 more minutes after bedtime?","alot","bedtime","small","none",0,0,1,"3/25/26","US",7.550992471,0
+"36","p061","2","If I clean my room, can I play five more rounds of games?","alot","activity","big","none",0,0,1,"3/25/26","US",7.550992471,1
+"37","p099","1","If I share my toys, can I get one more toy?","alittle","toy","small","failed",0,1,2,"4/23/26","",7.329226557,1
+"38","p099","12","If I wake up early tomorrow, can I stay up for 1 more hour after bedtime?","alot","bedtime","big","failed",0,1,2,"4/23/26","",7.329226557,1
+"39","p099","2","If I clean my room, can I play one more round of game?","alittle","activity","small","none",0,2,2,"4/23/26","",7.329226557,1
+"40","p099","3","If I brush my teeth, can I have ten more candies?","alot","food","big","none",0,1,1,"4/23/26","",7.329226557,1
+"41","p098","2","If I clean my room, can I play five more rounds of games?","alot","activity","big","failed",1,2,2,"4/23/26","",6.902121834,1
+"42","p098","1","If I share my toys, can I get one more toy?","alittle","toy","small","failed",1,2,1,"4/23/26","",6.902121834,1
+"43","p098","3","Can I have ten more candies?","alot","food","big","none",1,1,2,"4/23/26","",6.902121834,0
+"44","p098","9;30","If I wake up early tomorrow, can I stay up for 10 more minutes after bedtime?","alot","bedtime","small","none",2,2,2,"4/23/26","",6.902121834,1
+"45","p057","3","Can I have ten more candies?","alot","food","big","failed",1,0,2,"3/18/26","US",6.105407255,0
+"46","p057","9","If I wake up early tomorrow, can I stay up for 1 more hour after bedtime?","alot","bedtime","big","none",0,1,1,"3/18/26","US",6.105407255,1
+"47","p057","1","If I share my toys, can I get one more toy?","alittle","toy","small","failed",1,2,1,"3/18/26","US",6.105407255,1
+"48","p057"," 2","If I clean my room, can I play one more round of game?","alot","activity","small","none",1,2,1,"3/18/26","US",6.105407255,1
+"49","p045","2","If I clean my room, can I play five more rounds of games?","alot","activity","big","failed",2,1,2,"2/27/26","US",4.470910335,1
+"50","p045","1","If I share my toys, can I get five more toys?","alot","toy","big","none",2,2,1,"2/27/26","US",4.470910335,1
+"51","p045","sun goes got","If I wake up early tomorrow, can I stay up for 10 more minutes after bedtime?","alot","bedtime","small","none",2,2,2,"2/27/26","US",4.470910335,1
+"52","p045","3","If I brush my teeth, can I have one more candy?","alittle","food","small","failed",2,2,2,"2/27/26","US",4.470910335,1
+"53","p087","2","If I clean my room, can I play five more rounds of games?","alot","activity","big","none",1,1,2,"4/14/26","CS",6.195756331,1
+"54","p087","3","Can I have one more candy?","alittle","food","small","none",1,1,2,"4/14/26","CS",6.195756331,0
+"55","p087","9","Can I stay up for 10 more minutes after bedtime?","alot","bedtime","small","failed",0,0,2,"4/14/26","CS",6.195756331,0
+"56","p087","1","Can I get five more toys?","alot","toy","big","failed",1,1,1,"4/14/26","CS",6.195756331,0
+"57","p050","1","If I share my toys, can I get five more toys?","alittle","toy","big","none",2,2,2,"3/11/26","MC",5.837097878,1
+"58","p050","1","If I brush my teeth, can I have ten more candies?","alot","food","big","failed",1,1,2,"3/11/26","MC",5.837097878,1
+"59","p050","9","If I wake up early tomorrow, can I stay up for 10 more minutes after bedtime?","alittle","bedtime","small","failed",1,1,2,"3/11/26","MC",5.837097878,1
+"60","p050","8","If I clean my room, can I play one more round of game?","alittle","activity","small","none",0,0,2,"3/11/26","MC",5.837097878,1
+"61","p073","3","Can I have ten more candies?","alot","food","big","none",1,0,2,"4/2/26","AL",8.1724846,0
+"62","p073","2","If I clean my room, can I play five more rounds of games?","alot","activity","big","failed",1,0,2,"4/2/26","AL",8.1724846,1
+"63","p073","9pm","Can I stay up for 10 more minutes after bedtime?","alot","bedtime","small","failed",1,0,1,"4/2/26","AL",8.1724846,0
+"64","p073","1","If I share my toys, can I get one more toy?","alittle","toy","small","none",0,1,2,"4/2/26","AL",8.1724846,1
+"65","p086","1","If I share my toys, can I get five more toys?","alot","toy","big","none",2,2,2,"4/14/26","MC",8.933607118,1
+"66","p086","9:00","If I wake up early tomorrow, can I stay up for 10 more minutes after bedtime?","alot","bedtime","small","failed",1,1,2,"4/14/26","MC",8.933607118,1
+"67","p086","2","Can I play one more round of game?","alittle","activity","small","none",2,2,2,"4/14/26","MC",8.933607118,0
+"68","p086","3","If I brush my teeth, can I have ten more candies?","alot","food","big","failed",0,2,2,"4/14/26","MC",8.933607118,1
+"69","p080","5","Can I get one more toy?","alittle","toy","small","failed",2,0,1,"4/9/26","US",4.262833676,0
+"70","p080","3","Can I have ten more candies?","alot","food","big","none",2,1,2,"4/9/26","US",4.262833676,0
+"71","p080","4","Can I play five more rounds of games?","alittle","activity","big","failed",2,1,1,"4/9/26","US",4.262833676,0
+"72","p080","4","Can I stay up for 10 more minutes after bedtime?","alot","bedtime","small","none",0,0,2,"4/9/26","US",4.262833676,0
+"73","p068","2","If I clean my room, can I play five more rounds of games?","alot","activity","big","none",2,2,2,"4/2/26","AL",4.353182752,1
+"74","p068","1","If I share my toys, can I get one more toy?","alittle","toy","small","failed",2,2,1,"4/2/26","AL",4.353182752,1
+"75","p068","3","Can I have ten more candies?","alot","food","big","failed",2,2,2,"4/2/26","AL",4.353182752,0
+"76","p068","idk","Can I stay up for 10 more minutes after bedtime?","alittle","bedtime","small","none",2,2,1,"4/2/26","AL",4.353182752,0
+"77","p049","3","Can I have ten more candies?","alot","food","big","none",0,0,1,"3/6/26","CS",4.249144422,0
+"78","p049","1","If I share my toys, can I get one more toy?","alittle","toy","small","none",2,2,2,"3/6/26","CS",4.249144422,1
+"79","p049","9pm","Can I stay up for 1 more hour after bedtime?","alittle","bedtime","big","failed",0,0,2,"3/6/26","CS",4.249144422,0
+"80","p049","2","If I clean my room, can I play one more round of game?","alot","activity","small","failed",0,0,1,"3/6/26","CS",4.249144422,1
+"81","p054","3","If I brush my teeth, can I have ten more candies?","alot","food","big","none",2,1,2,"3/18/26","US",8.024640657,1
+"82","p054","1","If I share my toys, can I get one more toy?","alittle","toy","small","none",1,2,1,"3/18/26","US",8.024640657,1
+"83","p054","2","If I clean my room, can I play five more rounds of games?","alot","activity","big","failed",0,2,2,"3/18/26","US",8.024640657,1
+"84","p054","9","If I wake up early tomorrow, can I stay up for 10 more minutes after bedtime?","alot","bedtime","small","failed",0,1,1,"3/18/26","US",8.024640657,1
+"85","p066","1","If I share my toys, can I get five more toys?","alot","toy","big","failed",0,2,1,"4/2/26","AL",7.143052704,1
+"86","p066","idk","Can I stay up for 1 more hour after bedtime?","alot","bedtime","big","none",0,1,2,"4/2/26","AL",7.143052704,0
+"87","p066","2","If I clean my room, can I play one more round of game?","alittle","activity","small","failed",1,1,2,"4/2/26","AL",7.143052704,1
+"88","p066","3","If I brush my teeth, can I have one more candy?","alot","food","small","none",1,2,1,"4/2/26","AL",7.143052704,1
+"89","p051","2","If I clean my room, can I play five more rounds of games?","alot","activity","big","failed",2,1,1,"3/11/26","MC",6.436687201,1
+"90","p051","1","If I share my toys, can I get one more toy?","alittle","toy","small","failed",2,2,1,"3/11/26","MC",6.436687201,1
+"91","p051","3","If I brush my teeth, can I have one more candy?","alot","food","small","none",0,1,1,"3/11/26","MC",6.436687201,1
+"92","p051","10","If I wake up early tomorrow, can I stay up for 1 more hour after bedtime?","alot","bedtime","big","none",2,1,2,"3/11/26","MC",6.436687201,1
+"93","p062","3","Can I have ten more candies?","alot","food","big","none",1,1,2,"3/25/26","AL",5.429158111,0
+"94","p062","9pm","Can I stay up for 10 more minutes after bedtime?","alot","bedtime","small","none",1,0,1,"3/25/26","AL",5.429158111,0
+"95","p062","2","Can I play five more rounds of games?","alittle","activity","big","failed",1,1,2,"3/25/26","AL",5.429158111,0
+"96","p062","1","Can I get one more toy?","alittle","toy","small","failed",0,0,2,"3/25/26","AL",5.429158111,0
+"97","p082","1","Can I get one more toy?","alittle","toy","small","none",1,1,2,"4/9/26","US",5.796030116,0
+"98","p082","3","Can I have one more candy?","alittle","food","small","failed",2,1,1,"4/9/26","US",5.796030116,0
+"99","p082","303","Can I stay up for 1 more hour after bedtime?","alot","bedtime","big","failed",1,0,2,"4/9/26","US",5.796030116,0
+"100","p082","2","Can I play five more rounds of games?","alot","activity","big","none",1,1,2,"4/9/26","US",5.796030116,0
+"101","p060","1","If I share my toys, can I get five more toys?","alot","toy","big","failed",0,1,1,"3/25/26","US",6.904859685,1
+"102","p060","2","If I clean my room, can I play one more round of game?","alittle","activity","small","none",1,2,2,"3/25/26","US",6.904859685,1
+"103","p060","8","If I wake up early tomorrow, can I stay up for 10 more minutes after bedtime?","alot","bedtime","small","failed",0,1,1,"3/25/26","US",6.904859685,1
+"104","p060","3","Can I have ten more candies?","alot","food","big","none",1,0,1,"3/25/26","US",6.904859685,0
+"105","p072","9","Can I stay up for 10 more minutes after bedtime?","alittle","bedtime","small","failed",1,1,1,"4/2/26","CS",5.691991786,0
+"106","p072","1","If I clean my room, can I play five more rounds of games?","alittle","activity","big","failed",1,1,2,"4/2/26","CS",5.691991786,1
+"107","p072","1","If I share my toys, can I get one more toy?","alittle","toy","small","none",0,1,2,"4/2/26","CS",5.691991786,1
+"108","p072","3","Can I have ten more candies?","alot","food","big","none",1,0,1,"4/2/26","CS",5.691991786,0
+"109","p081","3","If I brush my teeth, can I have ten more candies?","alot","food","big","none",1,1,1,"4/9/26","CS",8.76659822,1
+"110","p081","3","If I clean my room, can I play one more round of game?","alittle","activity","small","failed",2,2,2,"4/9/26","CS",8.76659822,1
+"111","p081","9:01","Can I stay up for 1 more hour after bedtime?","alot","bedtime","big","failed",0,1,1,"4/9/26","CS",8.76659822,0
+"112","p081","1","If I share my toys, can I get one more toy?","alittle","toy","small","none",1,1,1,"4/9/26","CS",8.76659822,1
+"113","p094","1","If I share my toys, can I get five more toys?","alot","toy","big","failed",1,1,2,"4/16/26","AL",6.368240931,1
+"114","p094","2","If I clean my room, can I play five more rounds of games?","alot","activity","big","none",2,2,1,"4/16/26","AL",6.368240931,1
+"115","p094","3","If I brush my teeth, can I have one more candy?","alittle","food","small","failed",0,0,1,"4/16/26","AL",6.368240931,1
+"116","p094","9pm","If I wake up early tomorrow, can I stay up for 10 more minutes after bedtime?","alot","bedtime","small","none",2,2,2,"4/16/26","AL",6.368240931,1
+"117","p077","2","If I clean my room, can I play one more round of game?","alot","activity","small","failed",2,1,1,"4/9/26","CS",6.661190965,1
+"118","p077","9","If I wake up early tomorrow, can I stay up for 1 more hour after bedtime?","alot","bedtime","big","none",0,1,2,"4/9/26","CS",6.661190965,1
+"119","p077","1","If I share my toys, can I get five more toys?","alot","toy","big","failed",0,2,1,"4/9/26","CS",6.661190965,1
+"120","p077","3","If I brush my teeth, can I have one more candy?","alot","food","small","none",0,2,1,"4/9/26","CS",6.661190965,1
+"121","p047","2","Can I play five more rounds of games?","alot","activity","big","none",2,0,2,"2/27/26","MC",6.412046543,0
+"122","p047","9","Can I stay up for 10 more minutes after bedtime?","alot","bedtime","small","failed",2,0,2,"2/27/26","MC",6.412046543,0
+"123","p047","3","Can I have one more candy?","alittle","food","small","none",2,0,2,"2/27/26","MC",6.412046543,0
+"124","p047","1","Can I get five more toys?","alot","toy","big","failed",2,0,2,"2/27/26","MC",6.412046543,0
+"125","p088","1","Can I get one more toy?","alittle","toy","small","none",1,1,2,"4/14/26","CS",8.120465435,0
+"126","p088","9","Can I stay up for 1 more hour after bedtime?","alot","bedtime","big","failed",0,0,1,"4/14/26","CS",8.120465435,0
+"127","p088","4","If I clean my room, can I play one more round of game?","alittle","activity","small","failed",0,1,1,"4/14/26","CS",8.120465435,1
+"128","p088","3","If I brush my teeth, can I have ten more candies?","alot","food","big","none",0,1,1,"4/14/26","CS",8.120465435,1
+"129","p055","1","If I share my toys, can I get one more toy?","alittle","toy","small","none",1,1,2,"3/18/26","US",7.247091034,1
+"130","p055","9","Can I stay up for 1 more hour after bedtime?","alot","bedtime","big","failed",1,0,1,"3/18/26","US",7.247091034,0
+"131","p055","2","If I clean my room, can I play five more rounds of games?","alot","activity","big","none",1,1,2,"3/18/26","US",7.247091034,1
+"132","p055","3","If I brush my teeth, can I have one more candy?","alittle","food","small","failed",0,1,1,"3/18/26","US",7.247091034,1
+"133","p097","1","If I share my toys, can I get five more toys?","alot","toy","big","failed",2,2,1,"4/23/26","",4.07118412,1
+"134","p097","5 minutes","If I wake up early tomorrow, can I stay up for 1 more hour after bedtime?","alittle","bedtime","big","none",2,2,1,"4/23/26","",4.07118412,1
+"135","p097","2","If I clean my room, can I play one more round of game?","alittle","activity","small","failed",2,1,2,"4/23/26","",4.07118412,1
+"136","p097","1","If I brush my teeth, can I have one more candy?","alittle","food","small","none",2,2,2,"4/23/26","",4.07118412,1
+"137","p044","3","Can I have ten more candies?","alot","food","big","none",0,0,1,"2/27/26","US",6.138261465,0
+"138","p044","9","Can I stay up for 1 more hour after bedtime?","alot","bedtime","big","failed",0,0,1,"2/27/26","US",6.138261465,0
+"139","p044","2","Can I play one more round of game?","alittle","activity","small","none",0,0,2,"2/27/26","US",6.138261465,0
+"140","p044","1","Can I get one more toy?","alittle","toy","small","failed",0,0,2,"2/27/26","US",6.138261465,0
+"141","p064","3","If I brush my teeth, can I have ten more candies?","alot","food","big","failed",0,1,2,"3/25/26","AL",7.457905544,1
+"142","p064","1","If I share my toys, can I get one more toy?","alittle","toy","small","failed",1,1,2,"3/25/26","AL",7.457905544,1
+"143","p064","2","If I clean my room, can I play five more rounds of games?","alot","activity","big","none",0,1,2,"3/25/26","AL",7.457905544,1
+"144","p064","9pm","If I wake up early tomorrow, can I stay up for 10 more minutes after bedtime?","alot","bedtime","small","none",0,1,2,"3/25/26","AL",7.457905544,1
+"145","p058","i don’t know","If I wake up early tomorrow, can I stay up for 1 more hour after bedtime?","alittle","bedtime","big","failed",2,0,2,"3/18/26","US",4.364134155,1
+"146","p058","2","Can I play one more round of game?","alittle","activity","small","none",2,2,1,"3/18/26","US",4.364134155,0
+"147","p058","3","Can I have ten more candies?","alot","food","big","none",0,2,2,"3/18/26","US",4.364134155,0
+"148","p058","1","Can I get one more toy?","alittle","toy","small","failed",1,1,1,"3/18/26","US",4.364134155,0
+"149","p069","9pm","Can I stay up for 10 more minutes after bedtime?","alittle","bedtime","small","none",1,0,1,"4/2/26","CS",6.877481177,0
+"150","p069","2","Can I play five more rounds of games?","alittle","activity","big","failed",1,1,1,"4/2/26","CS",6.877481177,0
+"151","p069","3","If I brush my teeth, can I have ten more candies?","alittle","food","big","none",1,2,1,"4/2/26","CS",6.877481177,1
+"152","p069","1","Can I get one more toy?","alittle","toy","small","failed",1,1,1,"4/2/26","CS",6.877481177,0
+"153","p100","2","If I clean my room, can I play five more rounds of games?","alot","activity","big","failed",1,2,2,"4/23/26","",4.692676249,1
+"154","p100","6","Can I stay up for 1 more hour after bedtime?","alot","bedtime","big","none",0,1,1,"4/23/26","",4.692676249,0
+"155","p100","3","Can I have one more candy?","alittle","food","small","failed",1,1,2,"4/23/26","",4.692676249,0
+"156","p100","1","If I share my toys, can I get one more toy?","alittle","toy","small","none",0,1,2,"4/23/26","",4.692676249,1
+"157","p096","3","If I brush my teeth, can I have one more candy?","alittle","food","small","failed",1,1,1,"4/23/26","",5.374401095,1
+"158","p096","9","If I wake up early tomorrow, can I stay up for 1 more hour after bedtime?","alittle","bedtime","big","none",0,2,2,"4/23/26","",5.374401095,1
+"159","p096","1","If I share my toys, can I get one more toy?","alittle","toy","small","none",0,1,2,"4/23/26","",5.374401095,1
+"160","p096","2","If I clean my room, can I play five more rounds of games?","alot","activity","big","failed",0,1,2,"4/23/26","",5.374401095,1
+"161","p056","3","Can I have ten more candies?","alot","food","big","none",1,0,1,"3/18/26","US",8.958247775,0
+"162","p056","1","If I share my toys, can I get one more toy?","alittle","toy","small","failed",1,1,1,"3/18/26","US",8.958247775,1
+"163","p056","2","If I clean my room, can I play five more rounds of games?","alot","activity","big","failed",0,1,2,"3/18/26","US",8.958247775,1
+"164","p056","9","If I wake up early tomorrow, can I stay up for 10 more minutes after bedtime?","alot","bedtime","small","none",0,1,1,"3/18/26","US",8.958247775,1
+"165","p046","9","If I wake up early tomorrow, can I stay up for 10 more minutes after bedtime?","alot","bedtime","small","none",1,1,2,"2/27/26","MC",8.010951403,1
+"166","p046","3","If I brush my teeth, can I have ten more candies?","alot","food","big","none",1,0,2,"2/27/26","MC",8.010951403,1
+"167","p046","2","If I clean my room, can I play five more rounds of games?","alittle","activity","big","failed",2,0,1,"2/27/26","MC",8.010951403,1
+"168","p046","3","If I share my toys, can I get one more toy?","alittle","toy","small","failed",2,1,2,"2/27/26","MC",8.010951403,1
+"169","p091","1","If I share my toys, can I get five more toys?","alot","toy","big","failed",0,2,2,"4/16/26","CS",6.773442847,1
+"170","p091","8","If I wake up early tomorrow, can I stay up for 10 more minutes after bedtime?","alot","bedtime","small","none",0,2,2,"4/16/26","CS",6.773442847,1
+"171","p091","2","Can I play five more rounds of games?","alot","activity","big","none",2,2,1,"4/16/26","CS",6.773442847,0
+"172","p091","3","If I brush my teeth, can I have one more candy?","alot","food","small","failed",0,2,2,"4/16/26","CS",6.773442847,1
+"173","p085","12","If I wake up early tomorrow, can I stay up for 10 more minutes after bedtime?","alot","bedtime","small","failed",0,0,2,"4/9/26","CS",4.635181383,1
+"174","p085","3","If I brush my teeth, can I have ten more candies?","alittle","food","big","failed",0,2,2,"4/9/26","CS",4.635181383,1
+"175","p085","1","If I share my toys, can I get five more toys?","alittle","toy","big","none",2,2,1,"4/9/26","CS",4.635181383,1
+"176","p085","1","If I clean my room, can I play one more round of game?","alittle","activity","small","none",2,2,1,"4/9/26","CS",4.635181383,1
+"177","p095","11","If I wake up early tomorrow, can I stay up for 10 more minutes after bedtime?","alot","bedtime","small","failed",0,1,1,"4/16/26","CS",5.223819302,1
+"178","p095","2","If I clean my room, can I play five more rounds of games?","alot","activity","big","none",1,1,1,"4/16/26","CS",5.223819302,1
+"179","p095","3","If I brush my teeth, can I have one more candy?","alot","food","small","none",1,1,2,"4/16/26","CS",5.223819302,1
+"180","p095","1","If I share my toys, can I get five more toys?","alot","toy","big","failed",1,1,1,"4/16/26","CS",5.223819302,1
+"181","p075","2","Can I play five more rounds of games?","alot","activity","big","none",1,1,2,"4/9/26","US",7.770020534,0
+"182","p075","9","Can I stay up for 1 more hour after bedtime?","alot","bedtime","big","failed",1,1,2,"4/9/26","US",7.770020534,0
+"183","p075","3","Can I have one more candy?","alittle","food","small","failed",1,1,1,"4/9/26","US",7.770020534,0
+"184","p075","1","Can I get one more toy?","alittle","toy","small","none",1,1,1,"4/9/26","US",7.770020534,0
+"185","p083","2","If I clean my room, can I play one more round of game?","alot","activity","small","failed",1,2,1,"4/9/26","US",6.773442847,1
+"186","p083","3","If I brush my teeth, can I have one more candy?","alittle","food","small","none",1,2,1,"4/9/26","US",6.773442847,1
+"187","p083","1","If I share my toys, can I get five more toys?","alot","toy","big","none",1,2,2,"4/9/26","US",6.773442847,1
+"188","p083","9","If I wake up early tomorrow, can I stay up for 1 more hour after bedtime?","alot","bedtime","big","failed",1,2,1,"4/9/26","US",6.773442847,1
+"189","p070","9","Can I stay up for 10 more minutes after bedtime?","alot","bedtime","small","none",2,0,1,"4/2/26","CS",8.506502396,0
+"190","p070","1","Can I get five more toys?","alot","toy","big","none",1,0,2,"4/2/26","CS",8.506502396,0
+"191","p070","2","If I clean my room, can I play five more rounds of games?","alot","activity","big","failed",0,2,1,"4/2/26","CS",8.506502396,1
+"192","p070","3","If I brush my teeth, can I have one more candy?","alittle","food","small","failed",1,2,1,"4/2/26","CS",8.506502396,1
+"193","p048","cars","If I clean my room, can I play five more rounds of games?","alot","activity","big","failed",0,2,1,"3/4/26","US",4.186173854,1
+"194","p048","2","If I brush my teeth, can I have one more candy?","alittle","food","small","failed",2,0,1,"3/4/26","US",4.186173854,1
+"195","p048","car","If I share my toys, can I get one more toy?","alot","toy","small","none",0,2,2,"3/4/26","US",4.186173854,1
+"196","p048","2","Can I stay up for 1 more hour after bedtime?","alittle","bedtime","big","none",0,1,1,"3/4/26","US",4.186173854,0
+"197","p090","i don’t know","Can I stay up for 10 more minutes after bedtime?","alot","bedtime","small","none",0,2,2,"4/16/26","CS",5.442847365,0
+"198","p090","1","If I share my toys, can I get one more toy?","alittle","toy","small","failed",0,0,2,"4/16/26","CS",5.442847365,1
+"199","p090","3","If I brush my teeth, can I have ten more candies?","alot","food","big","failed",0,0,1,"4/16/26","CS",5.442847365,1
+"200","p090","3","If I clean my room, can I play five more rounds of games?","alot","activity","big","none",1,0,2,"4/16/26","CS",5.442847365,1
+"201","p067","1","If I share my toys, can I get five more toys?","alot","toy","big","failed",0,0,1,"4/2/26","AL",5.185489391,1
+"202","p067","5pm","If I wake up early tomorrow, can I stay up for 1 more hour after bedtime?","alot","bedtime","big","none",0,0,2,"4/2/26","AL",5.185489391,1
+"203","p067","3","If I brush my teeth, can I have one more candy?","alot","food","small","none",0,0,2,"4/2/26","AL",5.185489391,1
+"204","p067","1","If I clean my room, can I play one more round of game?","alot","activity","small","failed",1,1,2,"4/2/26","AL",5.185489391,1
+"205","p052","9","If I wake up early tomorrow, can I stay up for 10 more minutes after bedtime?","alot","bedtime","small","none",1,1,2,"3/11/26","MC",7.857631759,1
+"206","p052","3","If I brush my teeth, can I have ten more candies?","alot","food","big","none",0,1,2,"3/11/26","MC",7.857631759,1
+"207","p052","1","If I share my toys, can I get five more toys?","alot","toy","big","failed",0,1,1,"3/11/26","MC",7.857631759,1
+"208","p052","2","If I clean my room, can I play one more round of game?","alittle","activity","small","failed",0,1,1,"3/11/26","MC",7.857631759,1
+"209","p078","3","Can I have one more candy?","alot","food","small","failed",1,0,2,"4/9/26","CS",7.460643395,0
+"210","p078","2","If I clean my room, can I play five more rounds of games?","alot","activity","big","failed",1,1,1,"4/9/26","CS",7.460643395,1
+"211","p078","9pm","Can I stay up for 10 more minutes after bedtime?","alittle","bedtime","small","none",1,0,1,"4/9/26","CS",7.460643395,0
+"212","p078","2","Can I get five more toys?","alot","toy","big","none",1,1,2,"4/9/26","CS",7.460643395,0
